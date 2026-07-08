@@ -7,7 +7,7 @@ const SYSTEM_PROMPT = `你是倪海厦（倪师），精通伤寒论、金匮要
 请按以下格式回复：
 
 【辨证分析】
-根据患者描述的{症状}，从八纲辨证（阴阳表里寒热虚实）、六经辨证、脏腑辨证角度分析。
+根据患者描述的症状，从八纲辨证（阴阳表里寒热虚实）、六经辨证、脏腑辨证角度分析。
 
 【诊断结论】
 给出证型判断。
@@ -30,40 +30,54 @@ exports.main = async (event, context) => {
     return { code: -1, message: '请描述您的症状' };
   }
 
-  // 构建消息列表
   const messages = [
     { role: 'system', content: SYSTEM_PROMPT },
-    ...history.slice(-6).map(m => ({
-      role: m.role === 'system' ? 'assistant' : m.role,
-      content: m.content
-    })),
+    ...history.slice(-6)
+      .filter(m => m.role !== 'system')
+      .map(m => ({
+        role: m.role === 'assistant' ? 'assistant' : 'user',
+        content: m.content
+      })),
     { role: 'user', content: question }
   ];
 
-  try {
-    const ai = cloud.extend.AI;
-    const model = ai.createModel('hunyuan-v3');
+  // 尝试多种方式调用 AI 模型
+  const providerModelPairs = [
+    { provider: 'hunyuan-v3', model: 'hy3' },
+    { provider: 'hunyuan-v3', model: 'hy3-preview' },
+    { provider: 'cloudbase', model: 'hy3-preview' },
+  ];
 
-    const res = await model.generateText({
-      model: 'hy3',
-      messages,
-      temperature: 0.7,
-      max_tokens: 2048
-    });
+  let lastError = null;
+  for (const { provider, model } of providerModelPairs) {
+    try {
+      console.log(`尝试调用 AI: provider=${provider}, model=${model}`);
+      
+      const modelInstance = cloud.extend.AI.createModel(provider);
+      const res = await modelInstance.generateText({
+        model,
+        messages,
+        temperature: 0.7,
+        max_tokens: 2048
+      });
 
-    return {
-      code: 0,
-      reply: res.text,
-      usage: res.usage || {}
-    };
-  } catch (err) {
-    console.error('AI诊断失败:', err.message);
-
-    // 降级：返回错误信息
-    return {
-      code: -1,
-      message: 'AI服务繁忙，请稍后重试',
-      error: err.message
-    };
+      console.log('AI 调用成功，token 用量:', res.usage);
+      return {
+        code: 0,
+        reply: res.text,
+        usage: res.usage || {},
+        provider: `${provider}/${model}`
+      };
+    } catch (err) {
+      console.error(`AI调用失败 (${provider}/${model}):`, err.message || err);
+      lastError = err;
+    }
   }
+
+  // 所有方案都失败
+  return {
+    code: -1,
+    message: 'AI 服务暂时不可用，请稍后重试',
+    detail: lastError ? (lastError.message || String(lastError)) : '未知错误'
+  };
 };

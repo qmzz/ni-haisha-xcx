@@ -111,13 +111,20 @@ Page({
 
   // 处理 AI 回复
   handleAIResponse(result) {
+    let content;
+    if (result && result.code === 0) {
+      content = result.reply || result.content;
+    } else {
+      // 显示云函数返回的具体错误信息
+      const errMsg = result && (result.message || result.detail || result.error);
+      content = errMsg || '抱歉，我暂时无法回答这个问题，请稍后再试。';
+    }
+
     const aiMsg = {
       id: 'ai-' + Date.now(),
       role: 'assistant',
-      content: result.reply || result.content || '抱歉，我暂时无法回答这个问题，请稍后再试。',
+      content: content || '抱歉，我暂时无法回答这个问题，请稍后再试。',
       time: this.formatTime(new Date()),
-      // 如果有结构化诊断结果
-      diagnosis: result.diagnosis || null,
     };
 
     const messages = [...this.data.messages, aiMsg];
