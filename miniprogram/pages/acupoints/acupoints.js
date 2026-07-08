@@ -69,26 +69,16 @@ Page({
     });
   },
 
-  // 从 content markdown 中提取 **key：** value 格式的字段
-  extractContentField(content, label) {
-    if (!content) return '';
-    const regex = new RegExp(`\\*\\*${label}[：:]\\*\\*\\s*(.+?)(?:\\n|$)`, 'i');
-    const match = content.match(regex);
-    return match ? match[1].trim() : '';
-  },
-
   // 映射云数据库文档到列表卡片字段
+  // 注意：列表查询不返回 content 字段，用 summary + 顶部字段代替
   mapAcupointForList(doc) {
-    const content = (doc.content || '').replace(/\\n/g, '\n');
     return {
       id: doc._id,
       name: doc.name || '',
       code: doc.code || '',
       meridian: doc.meridian || '',
-      category: '',
-      location: doc.location || this.extractContentField(content, '定位') || '',
-      functions: this.extractContentField(content, '功效') || '',
-      technique: this.extractContentField(content, '刺法') || '',
+      location: doc.location || '',
+      summary: doc.summary || '',
     };
   },
 

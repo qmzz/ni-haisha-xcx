@@ -9,8 +9,8 @@ exports.main = async (event) => {
   try {
     switch (action) {
       case 'list': {
-        // 列表查询，支持搜索和分页
-        const { keyword = '', page = 1, pageSize = 20, category = '' } = query;
+        // 列表查询，支持搜索和分页。列表返回 summary，不返回 content（减少数据量）
+        const { keyword = '', page = 1, pageSize = 20, category = '', categoryField = 'category' } = query;
         const _ = db.command;
         let where = {};
 
@@ -22,13 +22,13 @@ exports.main = async (event) => {
           ]);
         }
         if (category) {
-          where[query.categoryField || 'category'] = category;
+          where[categoryField] = category;
         }
 
         const countRes = await db.collection(collection).where(where).count();
         const listRes = await db.collection(collection)
           .where(where)
-          .field({ content: false })  // 列表不返回正文，减少数据量
+          .field({ content: false })
           .skip((page - 1) * pageSize)
           .limit(pageSize)
           .get();

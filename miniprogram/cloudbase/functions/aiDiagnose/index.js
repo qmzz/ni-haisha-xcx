@@ -20,24 +20,29 @@ exports.main = async (event, context) => {
     { role: 'user', content: question }
   ];
 
-  const ai = cloud.ai();
-  const model = ai.createModel('hunyuan-v3');
+  try {
+    const ai = cloud.ai();
+    const model = ai.createModel('hunyuan-v3');
 
-  const res = await model.streamText({
-    model: 'hy3-preview',
-    messages
-  });
+    const res = await model.streamText({
+      model: 'hy3-preview',
+      messages
+    });
 
-  let fullText = '';
-  for await (const text of res.textStream) {
-    fullText += text;
+    let fullText = '';
+    for await (const text of res.textStream) {
+      fullText += text;
+    }
+
+    const usage = await res.usage;
+
+    return { code: 0, reply: fullText, usage };
+  } catch (err) {
+    console.error('AI 调用失败:', err.message || err);
+    return {
+      code: -1,
+      message: 'AI 服务暂不可用，请稍后重试',
+      detail: (err.message || String(err)).substring(0, 500)
+    };
   }
-
-  const usage = await res.usage;
-
-  return {
-    code: 0,
-    reply: fullText,
-    usage
-  };
 };

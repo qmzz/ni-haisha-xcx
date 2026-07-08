@@ -53,23 +53,17 @@ Page({
   },
 
   // 映射云数据库文档到列表卡片字段
+  // 注意：列表查询不返回 content 字段，医案数据没有 extra 字段
   mapCaseForList(doc) {
     return {
       id: doc._id,
-      title: doc.name || doc.title || '',
-      source: doc.source || '',
-      doctor: (doc.extra && doc.extra['医家']) || '倪海厦',
-      date: doc.date || '',
+      title: doc.name || '',
+      source: '',
+      doctor: '倪海厦',
       category: doc.category || '',
-      summary: (doc.extra && doc.extra['摘要']) || doc.summary || '',
+      summary: doc.summary || '',
       expanded: false,
-      details: {
-        symptoms: (doc.extra && doc.extra['症状']) || '',
-        diagnosis: (doc.extra && doc.extra['诊断']) || '',
-        formula: (doc.extra && doc.extra['方药']) || '',
-        result: (doc.extra && doc.extra['疗效']) || '',
-        analysis: (doc.extra && doc.extra['按语']) || doc.content || '',
-      }
+      details: {}
     };
   },
 
@@ -125,12 +119,41 @@ Page({
     this.loadCases();
   },
 
-  // 展开/收起详情
+  // 展开/收起详情 — 展开时从云函数加载完整内容
   toggleDetail(e) {
     const id = e.currentTarget.dataset.id;
     const caseList = this.data.caseList.map(item => {
       if (item.id === id) {
         item.expanded = !item.expanded;
+        // 展开时加载详情
+        if (item.expanded && !item.detailContent) {
+          item.loadingDetail = true;
+          this.setData({ caseList });
+          wx.cloud.callFunction({
+            name: 'knowledgeQuery',
+            data: { collection: 'ni_cases', action: 'detail', id },
+            success: (res) => {
+              if (res.result && res.result.code === 0 && res.result.data) {
+                const content = (res.result.data.content || '').replace(/\\n/g, '\n')
+                  .replace(/\*\*([^*]+)\*\*/g, '$1')
+                  .replace(/^#+ /gm, '')
+                  .replace(/^\- /gm, '• ');
+                const updated = this.data.caseList.map(c => {
+                  if (c.id === id) { c.detailContent = content; c.loadingDetail = false; }
+                  return c;
+                });
+                this.setData({ caseList: updated });
+              }
+            },
+            fail: () => {
+              const updated = this.data.caseList.map(c => {
+                if (c.id === id) { c.loadingDetail = false; }
+                return c;
+              });
+              this.setData({ caseList: updated });
+            }
+          });
+        }
       }
       return item;
     });

@@ -36,27 +36,16 @@
         </view>
       </view>
 
-      <!-- 展开详情 -->
+      <!-- 展开详情：调用云函数获取完整内容 -->
       <view wx:if="{{item.expanded}}" class="case-detail">
-        <view class="case-detail-item">
-          <text class="case-detail-label">📋 症状</text>
-          <text class="case-detail-text">{{item.details.symptoms}}</text>
+        <view wx:if="{{item.loadingDetail}}" class="loading-more">
+          <text>加载中...</text>
         </view>
-        <view class="case-detail-item">
-          <text class="case-detail-label">🩺 诊断</text>
-          <text class="case-detail-text text-primary font-bold">{{item.details.diagnosis}}</text>
+        <view wx:elif="{{item.detailContent}}">
+          <text class="case-detail-text">{{item.detailContent}}</text>
         </view>
-        <view class="case-detail-item">
-          <text class="case-detail-label">🌿 方药</text>
-          <text class="case-detail-text">{{item.details.formula}}</text>
-        </view>
-        <view class="case-detail-item">
-          <text class="case-detail-label">✅ 效果</text>
-          <text class="case-detail-text text-success">{{item.details.result}}</text>
-        </view>
-        <view class="case-detail-item">
-          <text class="case-detail-label">📖 按语</text>
-          <text class="case-detail-text case-analysis">{{item.details.analysis}}</text>
+        <view wx:else class="case-detail-item">
+          <text class="case-detail-text">点击展开查看完整医案内容</text>
         </view>
       </view>
     </view>

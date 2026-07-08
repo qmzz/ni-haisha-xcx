@@ -48,17 +48,12 @@
         </view>
       </view>
       <view class="acupoint-info">
-        <view class="acupoint-row">
+        <view wx:if="{{item.location}}" class="acupoint-row">
           <text class="acupoint-row-label">📍 定位</text>
           <text class="acupoint-row-value">{{item.location}}</text>
         </view>
-        <view class="acupoint-row">
-          <text class="acupoint-row-label">💪 功效</text>
-          <text class="acupoint-row-value">{{item.functions}}</text>
-        </view>
-        <view class="acupoint-row">
-          <text class="acupoint-row-label">💉 针刺</text>
-          <text class="acupoint-row-value">{{item.technique}}</text>
+        <view wx:if="{{item.summary}}" class="acupoint-row">
+          <text class="acupoint-row-value">{{item.summary}}</text>
         </view>
       </view>
     </view>

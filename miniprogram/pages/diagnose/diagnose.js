@@ -113,26 +113,15 @@ Page({
   handleAIResponse(result) {
     let content;
     if (result && result.code === 0) {
-      content = result.reply || result.content;
-      if (result.method) {
-        content = '[via ' + result.method + ']
-
-' + content;
-      }
+      content = result.reply || result.content || '抱歉，我暂时无法回答这个问题，请稍后再试。';
     } else {
-      const errMsg = result && result.message;
-      const errs = result && result.errors;
-      if (errs && errs.length) {
-        content = 'AI 调用失败，诊断信息：\n\n' + errs.map((e, i) => (i+1) + '. ' + e).join('\n');
-      } else {
-        content = errMsg || '抱歉，我暂时无法回答这个问题，请稍后再试。';
-      }
+      content = (result && (result.message || result.detail)) || '抱歉，我暂时无法回答这个问题，请稍后再试。';
     }
 
     const aiMsg = {
       id: 'ai-' + Date.now(),
       role: 'assistant',
-      content: content || '抱歉，我暂时无法回答这个问题，请稍后再试。',
+      content: content,
       time: this.formatTime(new Date()),
     };
 

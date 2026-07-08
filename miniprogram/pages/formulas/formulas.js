@@ -53,23 +53,11 @@ Page({
     });
   },
 
-  // 从 content markdown 中提取 **key：** value 格式的字段
-  extractContentField(content, label) {
-    if (!content) return '';
-    const regex = new RegExp(`\\*\\*${label}[：:]\\*\\*\\s*(.+?)(?:\\n|$)`, 'i');
-    const match = content.match(regex);
-    return match ? match[1].trim() : '';
-  },
-
   // 映射云数据库文档到列表卡片字段
+  // 注意：列表查询不返回 content 字段，用 summary 代替
   mapFormulaForList(doc) {
     const composition = doc.composition || [];
     const herbNames = composition.map(c => c.drug).join('、');
-    let usage = '';
-    if (doc.content) {
-      const cleanContent = doc.content.replace(/\\n/g, '\n');
-      usage = this.extractContentField(cleanContent, '功效');
-    }
     return {
       id: doc._id,
       name: doc.name || '',
@@ -77,7 +65,7 @@ Page({
       category: doc.category || '',
       subCategory: doc.category || '',
       difficulty: 'basic',
-      usage: usage || '',
+      usage: doc.summary || '',
       herbs: herbNames,
       herbCount: composition.length || 0,
     };
