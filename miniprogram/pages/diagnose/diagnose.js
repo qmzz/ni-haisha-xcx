@@ -131,15 +131,10 @@ Page({
     app.globalData.diagnoseHistory = messages;
   },
 
-  // 降级：本地模拟回复（云函数不可用时）
+  // 降级：本地备用回复（云函数不可用时）
   handleFallbackResponse(question) {
-    // 模拟 AI 响应（后续替换为真实 AI 调用）
     setTimeout(() => {
-      const mockReplies = [
-        '根据您描述的症状，初步辨证为：\n\n可以考虑以下思路：\n\n1. 桂枝汤加减 — 适用于表虚证\n2. 注意观察舌苔和脉象变化\n3. 建议配合针灸调理\n\n⚠️ 此为AI初步分析，请务必咨询专业中医师。',
-        '根据中医理论分析：\n\n您的症状可能属于：\n• 证型：肝郁气滞\n• 治则：疏肝理气\n• 参考方：逍遥散加减\n\n建议保持情志舒畅，适当运动。',
-      ];
-      const reply = mockReplies[Math.floor(Math.random() * mockReplies.length)];
+      const reply = '感谢您描述的症状。\n\n🔍 根据倪海厦经方辨证思路，建议您关注以下几点：\n\n① 观察舌象：舌质颜色、舌苔厚薄与颜色\n② 确认寒热：是否有恶寒、发热、手足冷热\n③ 辨别虚实：体力状况、脉象有力与否\n④ 回顾六经：症状是否符合六经辨证框架\n\n当前AI辨证服务正在恢复中，建议稍后重试。\n\n📚 提示：您可先浏览「经方阁」对照方证，或查阅「药材库」了解药物性味归经。\n\n⚠️ 本系统提供学习参考，具体诊疗请咨询执业中医师。';
 
       const aiMsg = {
         id: 'ai-' + Date.now(),

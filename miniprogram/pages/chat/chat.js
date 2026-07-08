@@ -59,20 +59,21 @@ Page({
   },
 
   callAI(question) {
-    // 调用云函数
+    // 调用 AI 诊断云函数
     wx.cloud.callFunction({
       name: 'aiDiagnose',
       data: {
         question: question,
-        mode: 'chat',
-        systemPrompt: this.data.systemPrompt,
         history: this.getRecentHistory()
       },
       success: (res) => {
+        const reply = (res.result && res.result.reply)
+          || (res.result && res.result.content)
+          || '抱歉，我暂时无法回答这个问题。';
         const aiMsg = {
           id: 'a-' + Date.now(),
           role: 'assistant',
-          content: res.result.reply || res.result.content || '抱歉，我暂时无法回答这个问题。',
+          content: reply,
           time: this.formatTime(new Date())
         };
         const messages = [...this.data.messages, aiMsg];
@@ -85,12 +86,11 @@ Page({
       },
       fail: (err) => {
         console.error('云函数调用失败:', err);
-        // 降级模拟
         setTimeout(() => {
           const aiMsg = {
             id: 'a-' + Date.now(),
             role: 'assistant',
-            content: '我收到了你的问题。\n\n目前AI服务正在初始化中，请稍后再试。你也可以先浏览我们的药材库和经方阁获取知识。\n\n🌿 提示：点击底栏"药材库"或"经方阁"查看更多内容。',
+            content: '感谢您的提问。\n\n目前AI问诊服务暂时繁忙，建议您：\n① 稍后重新提问\n② 浏览「药材库」查阅单味中药知识\n③ 浏览「经方阁」学习经典方剂配伍\n\n🌿 倪海厦经方理论强调方证对应，您也可以通过「学习」板块系统掌握辨证思维。',
             time: this.formatTime(new Date())
           };
           const messages = [...this.data.messages, aiMsg];
