@@ -51,7 +51,8 @@ Page({
       name: 'knowledgeQuery',
       data: {
         collection: 'ni_acupoints',
-        action: 'categories'
+        action: 'categories',
+        query: { categoryField: 'meridian' }
       },
       success: (res) => {
         if (res.result && res.result.code === 0 && res.result.data) {
@@ -68,17 +69,26 @@ Page({
     });
   },
 
+  // 从 content markdown 中提取 **key：** value 格式的字段
+  extractContentField(content, label) {
+    if (!content) return '';
+    const regex = new RegExp(`\\*\\*${label}[：:]\\*\\*\\s*(.+?)(?:\\n|$)`, 'i');
+    const match = content.match(regex);
+    return match ? match[1].trim() : '';
+  },
+
   // 映射云数据库文档到列表卡片字段
   mapAcupointForList(doc) {
+    const content = (doc.content || '').replace(/\\n/g, '\n');
     return {
       id: doc._id,
       name: doc.name || '',
       code: doc.code || '',
-      meridian: doc.category || '',
-      category: (doc.extra && doc.extra['类别']) || '',
-      location: (doc.extra && doc.extra['定位']) || '',
-      functions: (doc.extra && doc.extra['主治']) || '',
-      technique: (doc.extra && doc.extra['操作']) || '',
+      meridian: doc.meridian || '',
+      category: '',
+      location: doc.location || this.extractContentField(content, '定位') || '',
+      functions: this.extractContentField(content, '功效') || '',
+      technique: this.extractContentField(content, '刺法') || '',
     };
   },
 
@@ -93,6 +103,7 @@ Page({
     }
     if (activeMeridian !== 'all') {
       query.category = activeMeridian;
+      query.categoryField = 'meridian';
     }
 
     wx.cloud.callFunction({
@@ -145,6 +156,13 @@ Page({
     const meridian = e.currentTarget.dataset.meridian;
     this.setData({ activeMeridian: meridian, page: 1, hasMore: true, acupointList: [] });
     this.loadAcupoints();
+  },
+
+  goToDetail(e) {
+    const id = e.currentTarget.dataset.id;
+    wx.navigateTo({
+      url: `/pages/acupoint-detail/acupoint-detail?id=${id}`
+    });
   },
 
   toggleMap() {

@@ -1,0 +1,83 @@
+<!-- pages/acupoint-detail/acupoint-detail.wxml — 穴位详情页面 -->
+<view class="container" wx:if="{{!loading && acupoint}}">
+  <!-- 顶部穴位信息 -->
+  <view class="acupoint-header-card">
+    <view class="acupoint-header-bg">
+      <text class="acupoint-header-name">{{acupoint.name}}</text>
+      <view class="acupoint-header-meta">
+        <text class="acupoint-header-meridian">📌 {{acupoint.meridian}}</text>
+      </view>
+      <view class="acupoint-header-location">
+        <text>📍 {{acupoint.location}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 定位详情 -->
+  <view class="section-card" wx:if="{{acupoint.positionDetail}}">
+    <view class="section-header">
+      <text class="section-icon">📍</text>
+      <text class="section-title">穴位定位</text>
+    </view>
+    <text class="section-content">{{acupoint.positionDetail}}</text>
+  </view>
+
+  <!-- 功效 -->
+  <view class="section-card" wx:if="{{acupoint.functions}}">
+    <view class="section-header">
+      <text class="section-icon">💪</text>
+      <text class="section-title">功效</text>
+    </view>
+    <text class="section-content">{{acupoint.functions}}</text>
+  </view>
+
+  <!-- 主治 -->
+  <view class="section-card" wx:if="{{acupoint.indications}}">
+    <view class="section-header">
+      <text class="section-icon">🎯</text>
+      <text class="section-title">功效主治</text>
+    </view>
+    <text class="section-content">{{acupoint.indications}}</text>
+  </view>
+
+  <!-- 针刺方法 -->
+  <view class="section-card" wx:if="{{acupoint.technique || acupoint.needleMethod || acupoint.moxaMethod}}">
+    <view class="section-header">
+      <text class="section-icon">💉</text>
+      <text class="section-title">针刺方法</text>
+    </view>
+    <view wx:if="{{acupoint.technique}}" class="section-content">{{acupoint.technique}}</view>
+    <text wx:elif="{{acupoint.needleMethod}}" class="section-content">
+      刺法：{{acupoint.needleMethod}}{{acupoint.moxaMethod ? '\\n灸法：' + acupoint.moxaMethod : ''}}
+    </text>
+  </view>
+
+  <!-- 配伍应用 -->
+  <view class="section-card" wx:if="{{acupoint.combinations}}">
+    <view class="section-header">
+      <text class="section-icon">🔗</text>
+      <text class="section-title">配伍应用</text>
+    </view>
+    <text class="section-content">{{acupoint.combinations}}</text>
+  </view>
+
+  <!-- 完整说明 -->
+  <view class="section-card" wx:if="{{acupoint.fullContent}}">
+    <view class="section-header">
+      <text class="section-icon">📖</text>
+      <text class="section-title">完整说明</text>
+    </view>
+    <text class="section-content">{{acupoint.fullContent}}</text>
+  </view>
+
+  <!-- 底部提示 -->
+  <view class="footer-tip">
+    <text class="footer-text">⚠️ 针刺操作请在专业医师指导下进行</text>
+  </view>
+
+  <view style="height: 48rpx;"></view>
+</view>
+
+<view wx:if="{{loading}}" class="loading-more" style="margin-top: 200rpx;">
+  <text>加载中...</text>
+</view>

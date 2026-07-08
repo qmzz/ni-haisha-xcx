@@ -9,8 +9,8 @@
         </view>
         <view class="herb-header-info">
           <text class="herb-header-name">{{herb.name}}</text>
-          <text class="herb-header-pinyin">{{herb.pinyin}}</text>
-          <text class="herb-header-latin">{{herb.latinName}}</text>
+          <text wx:if="{{herb.pinyin}}" class="herb-header-pinyin">{{herb.pinyin}}</text>
+          <text wx:if="{{herb.latinName}}" class="herb-header-latin">{{herb.latinName}}</text>
         </view>
       </view>
     </view>
@@ -31,9 +31,9 @@
         <text class="info-label">归经</text>
         <text class="info-value">{{herb.meridian}}</text>
       </view>
-      <view class="info-item">
+      <view class="info-item" wx:if="{{herb.toxicity}}">
         <text class="info-label">毒性</text>
-        <text class="info-value {{herb.toxicity === '有毒' || herb.toxicity === '有小毒' ? 'text-danger' : ''}}">{{herb.toxicity || '无毒'}}</text>
+        <text class="info-value {{herb.toxicity === '有毒' || herb.toxicity === '有小毒' ? 'text-danger' : ''}}">{{herb.toxicity}}</text>
       </view>
     </view>
   </view>
@@ -48,12 +48,12 @@
   </view>
 
   <!-- 用法用量 -->
-  <view class="section-card">
+  <view class="section-card" wx:if="{{herb.dosage}}">
     <view class="section-header">
       <text class="section-icon">⚖️</text>
       <text class="section-title">用法用量</text>
     </view>
-    <text class="section-content">{{herb.dosage || '暂无数据'}}</text>
+    <text class="section-content">{{herb.dosage}}</text>
   </view>
 
   <!-- 使用禁忌 -->

@@ -14,13 +14,35 @@ Page({
     this.loadFormulaDetail(id);
   },
 
+  // 从 content markdown 中提取 **key：** value 格式的字段
+  extractContentField(content, label) {
+    if (!content) return '';
+    const regex = new RegExp(`\\*\\*${label}[：:]\\*\\*\\s*(.+?)(?:\\n|$)`, 'i');
+    const match = content.match(regex);
+    return match ? match[1].trim() : '';
+  },
+
+  // 从 content markdown 中提取 ## 标题 下的整段内容
+  extractContentSection(content, sectionName) {
+    if (!content) return '';
+    const regex = new RegExp(`##\\s+.*${sectionName}.*\\n+([\\s\\S]*?)(?=\\n##\\s|$)`, 'i');
+    const match = content.match(regex);
+    if (!match) return '';
+    // 基本清洗：去掉加粗标记和列表标记
+    return match[1]
+      .replace(/\\n/g, '\n')
+      .replace(/\*\*([^*]+)\*\*/g, '$1')
+      .replace(/^\-\s/gm, '• ')
+      .replace(/^>\s?/gm, '')
+      .trim();
+  },
+
   // 解析组成药材列表
   parseHerbs(compositionStr) {
     if (!compositionStr) return [];
     const parts = compositionStr.split(/[,，、;；]/).filter(Boolean);
     return parts.map(part => {
       const trimmed = part.trim();
-      // 尝试分离药名和剂量（简单分割会在详情页需要时由模板展示）
       return { name: trimmed, dosage: '', note: '' };
     });
   },
@@ -43,22 +65,27 @@ Page({
       success: (res) => {
         if (res.result && res.result.code === 0 && res.result.data) {
           const doc = res.result.data;
-          const compositionStr = doc.extra && doc.extra['组成'] || '';
+          // 将字面 \\n 还原为真实换行
+          const content = (doc.content || '').replace(/\\n/g, '\n');
+          const composition = doc.composition || [];
 
           const formula = {
             id: doc._id,
             name: doc.name || '未知方剂',
-            source: doc.source || '',
-            author: doc.author || '',
+            source: this.extractContentField(content, '来源') || doc.source || '',
             category: doc.category || '',
-            subCategory: (doc.extra && doc.extra['分类']) || '',
-            usage: (doc.extra && doc.extra['功效']) || (doc.extra && doc.extra['功用']) || '',
-            indication: (doc.extra && doc.extra['主治']) || '',
-            herbs: this.parseHerbs(compositionStr),
-            preparation: (doc.extra && doc.extra['用法']) || '',
-            analysis: (doc.extra && doc.extra['方解']) || doc.content || '',
-            taboos: (doc.extra && doc.extra['禁忌']) || '',
-            relatedFormulas: (doc.extra && doc.extra['附方']) || (doc.extra && doc.extra['相关方剂']) || [],
+            subCategory: this.extractContentField(content, '分类') || doc.category || '',
+            usage: this.extractContentField(content, '功效') || '',
+            indication: this.extractContentSection(content, '主治') || this.extractContentField(content, '主治') || '',
+            herbs: composition.map(c => ({
+              name: c.drug || '',
+              dosage: c.dosage || '',
+              note: c.role || ''
+            })),
+            preparation: this.extractContentField(content, '用法') || '',
+            analysis: this.extractContentSection(content, '倪师讲解') || this.extractContentSection(content, '方解') || content,
+            taboos: this.extractContentField(content, '禁忌') || '',
+            relatedFormulas: [],
           };
 
           this.setData({

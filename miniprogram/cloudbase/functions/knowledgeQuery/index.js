@@ -22,7 +22,7 @@ exports.main = async (event) => {
           ]);
         }
         if (category) {
-          where.category = category;
+          where[query.categoryField || 'category'] = category;
         }
 
         const countRes = await db.collection(collection).where(where).count();
@@ -49,7 +49,12 @@ exports.main = async (event) => {
         if (!res.data || res.data.length === 0) {
           return { code: -1, message: '未找到该记录' };
         }
-        return { code: 0, data: res.data };
+        // 处理 content 中字面 \\n 为真实换行
+        const data = Array.isArray(res.data) ? res.data[0] : res.data;
+        if (data && data.content && typeof data.content === 'string') {
+          data.content = data.content.replace(/\\n/g, '\n');
+        }
+        return { code: 0, data: data };
       }
 
       case 'search': {
@@ -67,11 +72,12 @@ exports.main = async (event) => {
       }
 
       case 'categories': {
-        // 获取分类列表（去重）
+        // 获取分类列表（去重），默认使用 category 字段，可通过 categoryField 指定
+        const catField = query.categoryField || 'category';
         const res = await db.collection(collection)
-          .field({ category: true })
+          .field({ [catField]: true })
           .get();
-        const cats = [...new Set(res.data.map(r => r.category).filter(Boolean))];
+        const cats = [...new Set(res.data.map(r => r[catField]).filter(Boolean))];
         return { code: 0, data: cats };
       }
 

@@ -7,6 +7,7 @@
     "pages/formulas/formulas",
     "pages/formula-detail/formula-detail",
     "pages/acupoints/acupoints",
+    "pages/acupoint-detail/acupoint-detail",
     "pages/cases/cases",
     "pages/learn/learn",
     "pages/chat/chat"

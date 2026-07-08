@@ -48,22 +48,23 @@ Page({
           const herb = {
             id: doc._id,
             name: doc.name || '未知',
-            pinyin: doc.pinyin || '',
-            latinName: doc.latinName || doc.latin_name || '',
             category: doc.category || '',
             subCategory: (doc.extra && doc.extra['分类']) || '',
             property,
             flavor,
             meridian: (doc.extra && doc.extra['归经']) || '',
-            toxicity: (doc.extra && doc.extra['毒性']) || '无毒',
+            toxicity: (doc.extra && doc.extra['毒性']) || '',
             functions: (doc.extra && doc.extra['功效']) || '',
-            dosage: (doc.extra && doc.extra['用量']) || '',
+            dosage: (doc.extra && doc.extra['用法用量']) || (doc.extra && doc.extra['用量']) || '',
             taboos: (doc.extra && doc.extra['禁忌']) || '',
             origin: (doc.extra && doc.extra['产地']) || '',
             harvest: (doc.extra && doc.extra['采收']) || '',
             processing: (doc.extra && doc.extra['炮制']) || '',
-            descriptions: doc.content || (doc.extra && doc.extra['说明']) || '',
+            descriptions: (doc.content || '').replace(/\\n/g, '\n'),
           };
+          // 只有数据中确实有 pinyin 字段时才设置
+          if (doc.pinyin) herb.pinyin = doc.pinyin;
+          if (doc.latinName || doc.latin_name) herb.latinName = doc.latinName || doc.latin_name;
 
           this.setData({
             herb,

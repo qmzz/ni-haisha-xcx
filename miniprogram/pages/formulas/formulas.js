@@ -53,20 +53,33 @@ Page({
     });
   },
 
+  // 从 content markdown 中提取 **key：** value 格式的字段
+  extractContentField(content, label) {
+    if (!content) return '';
+    const regex = new RegExp(`\\*\\*${label}[：:]\\*\\*\\s*(.+?)(?:\\n|$)`, 'i');
+    const match = content.match(regex);
+    return match ? match[1].trim() : '';
+  },
+
   // 映射云数据库文档到列表卡片字段
   mapFormulaForList(doc) {
-    const composition = doc.extra && doc.extra['组成'] || '';
-    const herbParts = composition.split(/[,，、;；]/).filter(Boolean);
+    const composition = doc.composition || [];
+    const herbNames = composition.map(c => c.drug).join('、');
+    let usage = '';
+    if (doc.content) {
+      const cleanContent = doc.content.replace(/\\n/g, '\n');
+      usage = this.extractContentField(cleanContent, '功效');
+    }
     return {
       id: doc._id,
       name: doc.name || '',
       source: doc.source || '',
       category: doc.category || '',
-      subCategory: (doc.extra && doc.extra['分类']) || '',
+      subCategory: doc.category || '',
       difficulty: 'basic',
-      usage: (doc.extra && doc.extra['功效']) || (doc.extra && doc.extra['功用']) || '',
-      herbs: composition,
-      herbCount: herbParts.length || 0,
+      usage: usage || '',
+      herbs: herbNames,
+      herbCount: composition.length || 0,
     };
   },
 

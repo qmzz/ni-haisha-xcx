@@ -34,6 +34,8 @@
       wx:for="{{acupointList}}"
       wx:key="id"
       class="acupoint-card"
+      data-id="{{item.id}}"
+      bindtap="goToDetail"
     >
       <view class="acupoint-header">
         <view class="acupoint-name-row">

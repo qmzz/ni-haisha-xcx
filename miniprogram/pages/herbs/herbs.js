@@ -76,15 +76,17 @@ Page({
   // 映射云数据库文档到列表卡片字段
   mapHerbForList(doc) {
     const { property, flavor } = this.parsePropertyFlavor(doc.extra && doc.extra['性味']);
-    return {
+    const result = {
       id: doc._id,
       name: doc.name || '',
-      pinyin: doc.pinyin || '',
       category: doc.category || '',
       property,
       flavor,
       functions: (doc.extra && doc.extra['功效']) || '',
     };
+    // 只有数据中确实有 pinyin 字段时才设置
+    if (doc.pinyin) result.pinyin = doc.pinyin;
+    return result;
   },
 
   // 从云函数分页加载药材列表
