@@ -20,35 +20,24 @@ exports.main = async (event, context) => {
     { role: 'user', content: question }
   ];
 
-  // 依次尝试 hunyuan-v3（免费计划优先）和 cloudbase
-  const providerList = ['hunyuan-v3', 'cloudbase'];
+  const ai = cloud.ai();
+  const model = ai.createModel('hunyuan-v3');
 
-  for (const provider of providerList) {
-    try {
-      const ai = cloud.ai();
-      const model = ai.createModel(provider);
+  const res = await model.streamText({
+    model: 'hy3-preview',
+    messages
+  });
 
-      const res = await model.streamText({
-        model: 'hy3-preview',
-        messages
-      });
-
-      let fullText = '';
-      for await (const text of res.textStream) {
-        fullText += text;
-      }
-
-      const usage = await res.usage;
-
-      return {
-        code: 0,
-        reply: fullText,
-        usage
-      };
-    } catch (err) {
-      console.error(`${provider} 调用失败:`, (err.message || String(err)).substring(0, 200));
-    }
+  let fullText = '';
+  for await (const text of res.textStream) {
+    fullText += text;
   }
 
-  return { code: -1, message: 'AI 服务暂不可用，请稍后再试' };
+  const usage = await res.usage;
+
+  return {
+    code: 0,
+    reply: fullText,
+    usage
+  };
 };
