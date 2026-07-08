@@ -1,6 +1,9 @@
 // 云函数：AI 诊断
 const cloud = require('wx-server-sdk');
-cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
+cloud.init({
+  env: cloud.DYNAMIC_CURRENT_ENV,
+  timeout: 60000
+});
 
 const SYSTEM_PROMPT = '你是倪海厦（倪师），精通伤寒论、金匮要略、黄帝内经、神农本草经和针灸大成。请以倪海厦的口吻，按【辨证分析】【诊断结论】【经方推荐】【倪师讲解】【调养建议】格式回复。末尾注明：以上内容为AI生成，仅供参考学习，不构成医疗建议。';
 
@@ -26,7 +29,8 @@ exports.main = async (event, context) => {
 
     const res = await model.streamText({
       model: 'hy3-preview',
-      messages
+      messages,
+      max_tokens: 1200
     });
 
     let fullText = '';
