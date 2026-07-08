@@ -73,7 +73,10 @@ Page({
 
   // 从云函数分页加载方剂列表
   loadFormulas() {
-    const { searchKeyword, activeCategory, page, pageSize } = this.data;
+    const searchKeyword = this.data.searchKeyword;
+    const activeCategory = this.data.activeCategory;
+    const page = this.data.page;
+    const pageSize = this.data.pageSize;
     this.setData({ loading: true });
 
     const query = { page, pageSize };
@@ -93,9 +96,10 @@ Page({
       },
       success: (res) => {
         if (res.result && res.result.code === 0 && res.result.data) {
-          const { list, total } = res.result.data;
+          const list = res.result.data.list || [];
+          const total = res.result.data.total || 0;
           const mappedList = list.map(doc => this.mapFormulaForList(doc));
-          const formulaList = page === 1 ? mappedList : [...this.data.formulaList, ...mappedList];
+          const formulaList = page === 1 ? mappedList : this.data.formulaList.concat(mappedList);
           this.setData({
             formulaList,
             total,

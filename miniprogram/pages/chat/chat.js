@@ -47,7 +47,7 @@ Page({
       time: this.formatTime(new Date())
     };
 
-    const messages = [...this.data.messages, userMsg];
+    const messages = this.data.messages.concat([userMsg]);
     this.setData({
       messages,
       inputValue: '',
@@ -76,7 +76,7 @@ Page({
           content: reply,
           time: this.formatTime(new Date())
         };
-        const messages = [...this.data.messages, aiMsg];
+        const messages = this.data.messages.concat([aiMsg]);
         this.setData({
           messages,
           loading: false,
@@ -93,7 +93,7 @@ Page({
             content: '感谢您的提问。\n\n目前AI问诊服务暂时繁忙，建议您：\n① 稍后重新提问\n② 浏览「药材库」查阅单味中药知识\n③ 浏览「经方阁」学习经典方剂配伍\n\n🌿 倪海厦经方理论强调方证对应，您也可以通过「学习」板块系统掌握辨证思维。',
             time: this.formatTime(new Date())
           };
-          const messages = [...this.data.messages, aiMsg];
+          const messages = this.data.messages.concat([aiMsg]);
           this.setData({
             messages,
             loading: false,

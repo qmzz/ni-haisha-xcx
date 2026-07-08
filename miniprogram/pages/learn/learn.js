@@ -96,7 +96,7 @@ Page({
       stage.completed = stageProgress.completed || 0;
       stage.courses = stage.courses.map((course, index) => {
         const status = stageProgress.courses && stageProgress.courses[index];
-        return { ...course, status: status || course.status };
+        return Object.assign({}, course, { status: status || course.status });
       });
       return stage;
     });
@@ -110,7 +110,8 @@ Page({
   },
 
   toggleCourse(e) {
-    const { stageId, courseIndex } = e.currentTarget.dataset;
+    const stageId = e.currentTarget.dataset.stageId;
+    const courseIndex = e.currentTarget.dataset.courseIndex;
     const stages = this.data.stages.map(stage => {
       if (stage.id === stageId) {
         const course = stage.courses[courseIndex];

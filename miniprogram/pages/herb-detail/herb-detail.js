@@ -43,7 +43,9 @@ Page({
       success: (res) => {
         if (res.result && res.result.code === 0 && res.result.data) {
           const doc = res.result.data;
-          const { property, flavor } = this.parsePropertyFlavor(doc.extra && doc.extra['性味']);
+          const pf = this.parsePropertyFlavor(doc.extra && doc.extra['性味']);
+          const property = pf.property;
+          const flavor = pf.flavor;
 
           const herb = {
             id: doc._id,

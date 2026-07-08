@@ -84,7 +84,10 @@ Page({
 
   // 从云函数分页加载穴位列表
   loadAcupoints() {
-    const { searchKeyword, activeMeridian, page, pageSize } = this.data;
+    const searchKeyword = this.data.searchKeyword;
+    const activeMeridian = this.data.activeMeridian;
+    const page = this.data.page;
+    const pageSize = this.data.pageSize;
     this.setData({ loading: true });
 
     const query = { page, pageSize };
@@ -105,9 +108,10 @@ Page({
       },
       success: (res) => {
         if (res.result && res.result.code === 0 && res.result.data) {
-          const { list, total } = res.result.data;
+          const list = res.result.data.list || [];
+          const total = res.result.data.total || 0;
           const mappedList = list.map(doc => this.mapAcupointForList(doc));
-          const acupointList = page === 1 ? mappedList : [...this.data.acupointList, ...mappedList];
+          const acupointList = page === 1 ? mappedList : this.data.acupointList.concat(mappedList);
           this.setData({
             acupointList,
             total,

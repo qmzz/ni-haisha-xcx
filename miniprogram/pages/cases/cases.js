@@ -69,7 +69,9 @@ Page({
 
   // 从云函数分页加载医案列表
   loadCases() {
-    const { activeCategory, page, pageSize } = this.data;
+    const activeCategory = this.data.activeCategory;
+    const page = this.data.page;
+    const pageSize = this.data.pageSize;
     this.setData({ loading: true });
 
     const query = { page, pageSize };
@@ -86,9 +88,10 @@ Page({
       },
       success: (res) => {
         if (res.result && res.result.code === 0 && res.result.data) {
-          const { list, total } = res.result.data;
+          const list = res.result.data.list || [];
+          const total = res.result.data.total || 0;
           const mappedList = list.map(doc => this.mapCaseForList(doc));
-          const caseList = page === 1 ? mappedList : [...this.data.caseList, ...mappedList];
+          const caseList = page === 1 ? mappedList : this.data.caseList.concat(mappedList);
           this.setData({
             caseList,
             total,

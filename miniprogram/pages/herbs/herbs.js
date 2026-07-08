@@ -75,7 +75,9 @@ Page({
 
   // 映射云数据库文档到列表卡片字段
   mapHerbForList(doc) {
-    const { property, flavor } = this.parsePropertyFlavor(doc.extra && doc.extra['性味']);
+    const pf = this.parsePropertyFlavor(doc.extra && doc.extra['性味']);
+    const property = pf.property;
+    const flavor = pf.flavor;
     const result = {
       id: doc._id,
       name: doc.name || '',
@@ -91,7 +93,10 @@ Page({
 
   // 从云函数分页加载药材列表
   loadHerbs() {
-    const { searchKeyword, activeCategory, page, pageSize } = this.data;
+    const searchKeyword = this.data.searchKeyword;
+    const activeCategory = this.data.activeCategory;
+    const page = this.data.page;
+    const pageSize = this.data.pageSize;
     this.setData({ loading: true });
 
     const query = { page, pageSize };
@@ -111,9 +116,10 @@ Page({
       },
       success: (res) => {
         if (res.result && res.result.code === 0 && res.result.data) {
-          const { list, total } = res.result.data;
+          const list = res.result.data.list || [];
+          const total = res.result.data.total || 0;
           const mappedList = list.map(doc => this.mapHerbForList(doc));
-          const herbList = page === 1 ? mappedList : [...this.data.herbList, ...mappedList];
+          const herbList = page === 1 ? mappedList : this.data.herbList.concat(mappedList);
           this.setData({
             herbList,
             total,

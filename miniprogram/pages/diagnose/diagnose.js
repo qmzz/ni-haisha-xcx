@@ -75,7 +75,7 @@ Page({
       time: this.formatTime(new Date())
     };
 
-    const messages = [...this.data.messages, userMsg];
+    const messages = this.data.messages.concat([userMsg]);
     this.setData({
       messages,
       inputValue: '',
@@ -125,7 +125,7 @@ Page({
       time: this.formatTime(new Date()),
     };
 
-    const messages = [...this.data.messages, aiMsg];
+    const messages = this.data.messages.concat([aiMsg]);
     this.setData({
       messages,
       loading: false,
@@ -148,7 +148,7 @@ Page({
         time: this.formatTime(new Date())
       };
 
-      const messages = [...this.data.messages, aiMsg];
+      const messages = this.data.messages.concat([aiMsg]);
       this.setData({
         messages,
         loading: false,
