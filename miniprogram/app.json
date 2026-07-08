@@ -1,0 +1,56 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/diagnose/diagnose",
+    "pages/herbs/herbs",
+    "pages/herb-detail/herb-detail",
+    "pages/formulas/formulas",
+    "pages/formula-detail/formula-detail",
+    "pages/acupoints/acupoints",
+    "pages/cases/cases",
+    "pages/learn/learn",
+    "pages/chat/chat"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#8B4513",
+    "navigationBarTitleText": "倪海厦经方助手",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#F5F0E8"
+  },
+  "tabBar": {
+    "color": "#8B7E6A",
+    "selectedColor": "#8B4513",
+    "backgroundColor": "#FDF8F0",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/tab-home.png",
+        "selectedIconPath": "images/tab-home-active.png"
+      },
+      {
+        "pagePath": "pages/diagnose/diagnose",
+        "text": "AI诊脉",
+        "iconPath": "images/tab-diagnose.png",
+        "selectedIconPath": "images/tab-diagnose-active.png"
+      },
+      {
+        "pagePath": "pages/herbs/herbs",
+        "text": "药材库",
+        "iconPath": "images/tab-herbs.png",
+        "selectedIconPath": "images/tab-herbs-active.png"
+      },
+      {
+        "pagePath": "pages/formulas/formulas",
+        "text": "经方阁",
+        "iconPath": "images/tab-formulas.png",
+        "selectedIconPath": "images/tab-formulas-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

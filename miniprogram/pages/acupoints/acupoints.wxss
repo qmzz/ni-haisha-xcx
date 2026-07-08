@@ -1,0 +1,137 @@
+/* pages/acupoints/acupoints.wxss — 穴位图样式 */
+
+.container {
+  background-color: #F5F0E8;
+}
+
+.search-bar {
+  background: #FDF8F0;
+  margin: 16rpx 24rpx;
+  border: 1px solid #E0D6CC;
+}
+
+.search-input {
+  flex: 1;
+  font-size: 28rpx;
+  color: #3E2723;
+}
+
+.search-clear {
+  font-size: 28rpx;
+  color: #B8A898;
+  padding: 4rpx 8rpx;
+}
+
+/* ========== 经络标签 ========== */
+.meridian-scroll {
+  padding: 8rpx 0;
+}
+
+.meridian-list {
+  display: flex;
+  padding: 0 24rpx;
+  white-space: nowrap;
+}
+
+.meridian-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 12rpx 24rpx;
+  margin-right: 12rpx;
+  border-radius: 32rpx;
+  font-size: 24rpx;
+  color: #5D4037;
+  background: #FDF8F0;
+  border: 1rpx solid #E0D6CC;
+}
+
+.meridian-active {
+  background: linear-gradient(135deg, #D2691E, #E67E22);
+  color: #FFFFFF;
+  border-color: transparent;
+  box-shadow: 0 2rpx 12rpx rgba(210, 105, 30, 0.2);
+}
+
+/* ========== 穴位卡片 ========== */
+.acupoint-list {
+  padding: 16rpx 24rpx;
+}
+
+.acupoint-card {
+  background: #FDF8F0;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 12rpx rgba(139, 69, 19, 0.04);
+  border: 1rpx solid #EFEBE9;
+}
+
+.acupoint-header {
+  margin-bottom: 16rpx;
+  padding-bottom: 16rpx;
+  border-bottom: 1rpx solid #EFEBE9;
+}
+
+.acupoint-name-row {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 10rpx;
+}
+
+.acupoint-name {
+  font-size: 36rpx;
+  font-weight: 800;
+  color: #3E2723;
+  margin-right: 12rpx;
+}
+
+.acupoint-code {
+  font-size: 24rpx;
+  color: #D2691E;
+  font-weight: 600;
+  font-family: monospace;
+}
+
+.acupoint-tags {
+  display: flex;
+  gap: 8rpx;
+}
+
+.acupoint-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.acupoint-row {
+  display: flex;
+  align-items: flex-start;
+}
+
+.acupoint-row-label {
+  font-size: 26rpx;
+  color: #8B4513;
+  font-weight: 600;
+  margin-right: 8rpx;
+  white-space: nowrap;
+  min-width: 100rpx;
+}
+
+.acupoint-row-value {
+  font-size: 26rpx;
+  color: #3E2723;
+  line-height: 1.6;
+  flex: 1;
+}
+
+/* ========== 底部提示 ========== */
+.footer-tip {
+  display: flex;
+  justify-content: center;
+  padding: 32rpx;
+}
+
+.footer-text {
+  font-size: 22rpx;
+  color: #D2691E;
+}

@@ -1,0 +1,67 @@
+<!-- pages/learn/learn.wxml — 学习路径页面 -->
+<view class="container">
+  <!-- 顶部说明 -->
+  <view class="learn-header">
+    <text class="learn-header-title">📚 倪海厦经方学习路径</text>
+    <text class="learn-header-desc">从中医基础到临床实战，循序渐进掌握经方精髓</text>
+  </view>
+
+  <!-- 学习阶段列表 -->
+  <view class="stage-list">
+    <view
+      wx:for="{{stages}}"
+      wx:key="id"
+      wx:for-item="stage"
+      class="stage-card"
+    >
+      <!-- 阶段头部 -->
+      <view class="stage-header" data-stage="{{stage.id}}" bindtap="toggleStage">
+        <view class="stage-header-left">
+          <view class="stage-progress-circle">
+            <text class="stage-progress-text">{{stage.completed}}/{{stage.total}}</text>
+          </view>
+          <view class="stage-header-text">
+            <text class="stage-header-title">{{stage.title}}</text>
+            <text class="stage-header-desc">{{stage.desc}}</text>
+          </view>
+        </view>
+        <text class="stage-expand-icon">{{expandedStage === stage.id ? '▾' : '▸'}}</text>
+      </view>
+
+      <!-- 进度条 -->
+      <view class="stage-progress-bar">
+        <view class="stage-progress-fill" style="width: {{stage.completed / stage.total * 100}}%"></view>
+      </view>
+
+      <!-- 课程列表（展开时显示） -->
+      <view wx:if="{{expandedStage === stage.id}}" class="course-list">
+        <view
+          wx:for="{{stage.courses}}"
+          wx:key="name"
+          wx:for-index="courseIdx"
+          wx:for-item="course"
+          class="course-item {{course.status}}"
+          data-stage-id="{{stage.id}}"
+          data-course-index="{{courseIdx}}"
+          bindtap="toggleCourse"
+        >
+          <view class="course-status-icon">
+            <text wx:if="{{course.status === 'completed'}}">✅</text>
+            <text wx:elif="{{course.status === 'recommend'}}">⭐</text>
+            <text wx:else>○</text>
+          </view>
+          <view class="course-info">
+            <text class="course-name">{{course.name}}</text>
+            <text class="course-type">{{course.type}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部提示 -->
+  <view class="footer-tip-area">
+    <text class="footer-tip-text">💡 点击课程标记学习进度，进度自动保存</text>
+    <text class="footer-tip-text">⭐ 标记为推荐先学的内容</text>
+  </view>
+</view>

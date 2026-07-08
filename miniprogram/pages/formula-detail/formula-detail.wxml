@@ -1,0 +1,111 @@
+<!-- pages/formula-detail/formula-detail.wxml — 方剂详情页面 -->
+<view class="container" wx:if="{{!loading && formula}}">
+  <!-- 顶部方剂信息 -->
+  <view class="formula-header-card">
+    <view class="formula-header-bg">
+      <text class="formula-header-name">{{formula.name}}</text>
+      <view class="formula-header-meta">
+        <text class="formula-header-source">《{{formula.source}}》</text>
+        <text class="formula-header-author">{{formula.author}}</text>
+      </view>
+      <view class="formula-header-tags">
+        <text class="tag tag-success">{{formula.category}} · {{formula.subCategory}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功效主治 -->
+  <view class="section-card">
+    <view class="section-header">
+      <text class="section-icon">🎯</text>
+      <text class="section-title">功用</text>
+    </view>
+    <text class="section-content text-lg font-bold text-primary">{{formula.usage}}</text>
+  </view>
+
+  <view class="section-card">
+    <view class="section-header">
+      <text class="section-icon">🩺</text>
+      <text class="section-title">主治</text>
+    </view>
+    <text class="section-content">{{formula.indication}}</text>
+  </view>
+
+  <!-- 组成 -->
+  <view class="section-card">
+    <view class="section-header">
+      <text class="section-icon">🌿</text>
+      <text class="section-title">组成</text>
+    </view>
+    <view class="herb-composition">
+      <view
+        wx:for="{{formula.herbs}}"
+        wx:key="name"
+        class="herb-composition-item"
+        data-name="{{item.name}}"
+        bindtap="goToHerbDetail"
+      >
+        <view class="herb-comp-avatar">
+          <text class="herb-comp-avatar-text">{{item.name[0]}}</text>
+        </view>
+        <view class="herb-comp-info">
+          <text class="herb-comp-name">{{item.name}}</text>
+          <text class="herb-comp-dosage">{{item.dosage}}</text>
+          <text class="herb-comp-note">{{item.note}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 用法 -->
+  <view class="section-card" wx:if="{{formula.preparation}}">
+    <view class="section-header">
+      <text class="section-icon">🔥</text>
+      <text class="section-title">用法</text>
+    </view>
+    <text class="section-content">{{formula.preparation}}</text>
+  </view>
+
+  <!-- 方解 -->
+  <view class="section-card" wx:if="{{formula.analysis}}">
+    <view class="section-header">
+      <text class="section-icon">📖</text>
+      <text class="section-title">方解</text>
+    </view>
+    <text class="section-content">{{formula.analysis}}</text>
+  </view>
+
+  <!-- 禁忌 -->
+  <view class="section-card" wx:if="{{formula.taboos}}">
+    <view class="section-header">
+      <text class="section-icon">⚠️</text>
+      <text class="section-title">使用禁忌</text>
+    </view>
+    <text class="section-content text-danger">{{formula.taboos}}</text>
+  </view>
+
+  <!-- 相关方剂 -->
+  <view class="section-card" wx:if="{{formula.relatedFormulas && formula.relatedFormulas.length > 0}}">
+    <view class="section-header">
+      <text class="section-icon">🔗</text>
+      <text class="section-title">相关方剂</text>
+    </view>
+    <view
+      wx:for="{{formula.relatedFormulas}}"
+      wx:key="name"
+      class="related-item"
+      data-id="{{item.id}}"
+      bindtap="goToFormula"
+    >
+      <text class="related-name">{{item.name}}</text>
+      <text class="tag tag-default">{{item.relation}}</text>
+    </view>
+  </view>
+
+  <!-- 底部 -->
+  <view style="height: 48rpx;"></view>
+</view>
+
+<view wx:if="{{loading}}" class="loading-more" style="margin-top: 200rpx;">
+  <text>加载中...</text>
+</view>

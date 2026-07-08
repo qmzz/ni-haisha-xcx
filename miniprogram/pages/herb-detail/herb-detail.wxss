@@ -1,0 +1,178 @@
+/* pages/herb-detail/herb-detail.wxss — 药材详情样式 */
+
+/* ========== 头部卡片 ========== */
+.herb-header-card {
+  margin: 0 0 16rpx;
+}
+
+.herb-header-bg {
+  background: linear-gradient(135deg, #2E7D32, #4CAF50);
+  padding: 40rpx 32rpx;
+}
+
+.herb-header-content {
+  display: flex;
+  align-items: center;
+}
+
+.herb-header-avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 24rpx;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 24rpx;
+}
+
+.herb-header-avatar-text {
+  font-size: 56rpx;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+.herb-header-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.herb-header-name {
+  font-size: 44rpx;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-bottom: 8rpx;
+}
+
+.herb-header-pinyin {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.herb-header-latin {
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.65);
+  font-style: italic;
+  margin-top: 4rpx;
+}
+
+/* ========== 基本信息网格 ========== */
+.info-card {
+  background: #FDF8F0;
+  margin: 16rpx 24rpx;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(139, 69, 19, 0.06);
+}
+
+.info-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.info-item {
+  width: 50%;
+  padding: 12rpx 0;
+}
+
+.info-label {
+  font-size: 24rpx;
+  color: #8D6E63;
+  display: block;
+  margin-bottom: 4rpx;
+}
+
+.info-value {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #3E2723;
+}
+
+/* ========== 信息区块卡片 ========== */
+.section-card {
+  background: #FDF8F0;
+  margin: 16rpx 24rpx;
+  border-radius: 16rpx;
+  padding: 28rpx;
+  box-shadow: 0 2rpx 12rpx rgba(139, 69, 19, 0.04);
+  border: 1rpx solid #EFEBE9;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+  padding-bottom: 16rpx;
+  border-bottom: 1rpx solid #EFEBE9;
+}
+
+.section-icon {
+  font-size: 36rpx;
+  margin-right: 12rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #5D4037;
+}
+
+.section-content {
+  font-size: 28rpx;
+  color: #3E2723;
+  line-height: 1.8;
+}
+
+/* ========== 相关方剂 ========== */
+.related-formula {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #EFEBE9;
+}
+
+.related-formula:last-child {
+  border-bottom: none;
+}
+
+.related-formula:active {
+  opacity: 0.8;
+}
+
+.related-left {
+  display: flex;
+  flex-direction: column;
+  min-width: 160rpx;
+}
+
+.related-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #3E2723;
+  margin-bottom: 6rpx;
+}
+
+.related-tags {
+  display: flex;
+}
+
+.related-herbs {
+  flex: 1;
+  font-size: 24rpx;
+  color: #8D6E63;
+  margin-left: 16rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.related-arrow {
+  font-size: 32rpx;
+  color: #C9B8A8;
+  margin-left: 12rpx;
+}
+
+/* ========== 危险文本 ========== */
+.text-danger {
+  color: #C62828 !important;
+}

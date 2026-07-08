@@ -1,0 +1,9 @@
+{
+  "name": "knowledgeQuery",
+  "version": "1.0.0",
+  "description": "倪海厦经方助手 - 知识库查询云函数",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

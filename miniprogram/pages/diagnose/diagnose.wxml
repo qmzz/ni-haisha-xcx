@@ -1,0 +1,110 @@
+<!-- pages/diagnose/diagnose.wxml — AI诊脉页面 -->
+<view class="diagnose-container">
+  <!-- 聊天区域 -->
+  <scroll-view
+    class="chat-scroll"
+    scroll-y
+    scroll-into-view="{{scrollToView}}"
+    scroll-with-animation="{{true}}"
+    enhanced="{{true}}"
+    show-scrollbar="{{false}}"
+  >
+    <view class="chat-list">
+      <!-- 消息列表 -->
+      <view
+        wx:for="{{messages}}"
+        wx:key="id"
+        id="msg-{{item.id}}"
+        class="msg-wrapper {{item.role === 'user' ? 'msg-user' : 'msg-ai'}}"
+      >
+        <!-- AI 头像 -->
+        <view class="msg-avatar" wx:if="{{item.role !== 'user'}}">
+          <text class="avatar-icon">🩺</text>
+        </view>
+
+        <view class="msg-body {{item.role === 'user' ? 'msg-body-user' : 'msg-body-ai'}}">
+          <!-- 系统消息（欢迎） -->
+          <view wx:if="{{item.role === 'system'}}" class="msg-system">
+            <text class="msg-system-text">{{item.content}}</text>
+          </view>
+
+          <!-- AI 消息 -->
+          <view wx:elif="{{item.role === 'assistant'}}" class="msg-content-ai">
+            <text class="msg-text">{{item.content}}</text>
+          </view>
+
+          <!-- 用户消息 -->
+          <view wx:else class="msg-content-user">
+            <text class="msg-text">{{item.content}}</text>
+          </view>
+
+          <!-- 时间 -->
+          <text class="msg-time">{{item.time}}</text>
+        </view>
+
+        <!-- 用户头像 -->
+        <view class="msg-avatar" wx:if="{{item.role === 'user'}}">
+          <text class="avatar-icon">👤</text>
+        </view>
+      </view>
+
+      <!-- AI 思考中 -->
+      <view wx:if="{{loading}}" class="msg-wrapper msg-ai">
+        <view class="msg-avatar">
+          <text class="avatar-icon">🩺</text>
+        </view>
+        <view class="msg-body msg-body-ai">
+          <view class="msg-thinking">
+            <text class="thinking-dot">●</text>
+            <text class="thinking-dot">●</text>
+            <text class="thinking-dot">●</text>
+            <text class="thinking-text">辨证中...</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态：首次进入建议问题 -->
+    <view wx:if="{{isFirstChat && !loading}}" class="suggested-area">
+      <text class="suggested-title">💡 试试这些问题：</text>
+      <view class="suggested-list">
+        <view
+          wx:for="{{suggestedQuestions}}"
+          wx:key="*this"
+          class="suggested-item"
+          data-question="{{item}}"
+          bindtap="tapSuggestedQuestion"
+        >
+          {{item}}
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 底部输入区域 -->
+  <view class="input-area safe-bottom">
+    <view class="input-row">
+      <view class="input-wrap">
+        <textarea
+          class="chat-input"
+          value="{{inputValue}}"
+          placeholder="描述症状，开始AI诊脉..."
+          placeholder-style="color: #B8A898;"
+          bindinput="onInput"
+          auto-height="{{true}}"
+          maxlength="-1"
+          confirm-type="send"
+          bindconfirm="sendMessage"
+          show-confirm-bar="{{false}}"
+          adjust-position="{{true}}"
+        />
+      </view>
+      <view class="send-btn {{inputValue ? 'send-active' : ''}}" bindtap="sendMessage">
+        <text>发送</text>
+      </view>
+    </view>
+    <view class="input-actions">
+      <text class="action-link" bindtap="clearChat">清空对话</text>
+    </view>
+  </view>
+</view>

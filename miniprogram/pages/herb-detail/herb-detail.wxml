@@ -1,0 +1,126 @@
+<!-- pages/herb-detail/herb-detail.wxml — 药材详情页面 -->
+<view class="container" wx:if="{{!loading && herb}}">
+  <!-- 顶部药材信息卡片 -->
+  <view class="herb-header-card">
+    <view class="herb-header-bg">
+      <view class="herb-header-content">
+        <view class="herb-header-avatar">
+          <text class="herb-header-avatar-text">{{herb.name[0]}}</text>
+        </view>
+        <view class="herb-header-info">
+          <text class="herb-header-name">{{herb.name}}</text>
+          <text class="herb-header-pinyin">{{herb.pinyin}}</text>
+          <text class="herb-header-latin">{{herb.latinName}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 基本信息 -->
+  <view class="info-card">
+    <view class="info-grid">
+      <view class="info-item">
+        <text class="info-label">分类</text>
+        <text class="info-value">{{herb.category}} · {{herb.subCategory}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">性味</text>
+        <text class="info-value">{{herb.property}} · {{herb.flavor}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">归经</text>
+        <text class="info-value">{{herb.meridian}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">毒性</text>
+        <text class="info-value {{herb.toxicity === '有毒' || herb.toxicity === '有小毒' ? 'text-danger' : ''}}">{{herb.toxicity || '无毒'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功效主治 -->
+  <view class="section-card">
+    <view class="section-header">
+      <text class="section-icon">💊</text>
+      <text class="section-title">功效主治</text>
+    </view>
+    <text class="section-content">{{herb.functions}}</text>
+  </view>
+
+  <!-- 用法用量 -->
+  <view class="section-card">
+    <view class="section-header">
+      <text class="section-icon">⚖️</text>
+      <text class="section-title">用法用量</text>
+    </view>
+    <text class="section-content">{{herb.dosage || '暂无数据'}}</text>
+  </view>
+
+  <!-- 使用禁忌 -->
+  <view class="section-card" wx:if="{{herb.taboos}}">
+    <view class="section-header">
+      <text class="section-icon">⚠️</text>
+      <text class="section-title">使用禁忌</text>
+    </view>
+    <text class="section-content text-danger">{{herb.taboos}}</text>
+  </view>
+
+  <!-- 产地/采收/炮制 -->
+  <view class="section-card" wx:if="{{herb.origin}}">
+    <view class="section-header">
+      <text class="section-icon">📍</text>
+      <text class="section-title">产地来源</text>
+    </view>
+    <text class="section-content">{{herb.origin}}</text>
+  </view>
+
+  <view class="section-card" wx:if="{{herb.harvest}}">
+    <view class="section-header">
+      <text class="section-icon">🌾</text>
+      <text class="section-title">采收加工</text>
+    </view>
+    <text class="section-content">{{herb.harvest}}</text>
+    <text class="section-content mt-sm" wx:if="{{herb.processing}}">{{herb.processing}}</text>
+  </view>
+
+  <!-- 详细描述 -->
+  <view class="section-card" wx:if="{{herb.descriptions}}">
+    <view class="section-header">
+      <text class="section-icon">📖</text>
+      <text class="section-title">详细说明</text>
+    </view>
+    <text class="section-content">{{herb.descriptions}}</text>
+  </view>
+
+  <!-- 相关方剂 -->
+  <view class="section-card" wx:if="{{relatedFormulas.length > 0}}">
+    <view class="section-header">
+      <text class="section-icon">📜</text>
+      <text class="section-title">相关方剂</text>
+    </view>
+    <view
+      wx:for="{{relatedFormulas}}"
+      wx:key="id"
+      class="related-formula"
+      data-id="{{item.id}}"
+      bindtap="goToFormula"
+    >
+      <view class="related-left">
+        <text class="related-name">{{item.name}}</text>
+        <view class="related-tags">
+          <text class="tag tag-primary">{{item.correlation}}</text>
+        </view>
+      </view>
+      <text class="related-herbs">{{item.herbs}}</text>
+      <text class="related-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 底部间距 -->
+  <view style="height: 48rpx;"></view>
+</view>
+
+<!-- 加载中 -->
+<view wx:if="{{loading}}" class="loading-more" style="margin-top: 200rpx;">
+  <text>加载中...</text>
+</view>

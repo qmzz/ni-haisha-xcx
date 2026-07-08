@@ -1,0 +1,117 @@
+<!-- pages/index/index.wxml — 首页 -->
+<view class="container">
+  <!-- 顶部 Header -->
+  <view class="header">
+    <view class="header-top">
+      <view class="header-greeting">
+        <text class="greeting-text">{{greeting}}</text>
+        <text class="greeting-sub">倪师经方，传承经典</text>
+      </view>
+      <image class="header-logo" src="/images/logo.png" mode="aspectFit" />
+    </view>
+    <view class="header-date">
+      <text class="date-text">{{dateStr}}</text>
+    </view>
+  </view>
+
+  <!-- 今日荐方卡片 -->
+  <view class="daily-card" wx:if="{{dailyFormula}}">
+    <view class="daily-header">
+      <view class="daily-title-row">
+        <text class="daily-icon">🏮</text>
+        <text class="daily-title">今日荐方</text>
+      </view>
+      <text class="daily-more" bindtap="navigateTo" data-path="/pages/formulas/formulas">更多经方 ›</text>
+    </view>
+    <view class="daily-content">
+      <view class="daily-formula-name">{{dailyFormula.name}}</view>
+      <view class="daily-tags">
+        <text class="tag tag-primary">{{dailyFormula.category}}</text>
+        <text class="tag tag-default">{{dailyFormula.source}}</text>
+      </view>
+      <view class="daily-usage">{{dailyFormula.usage}}</view>
+      <view class="daily-herbs">
+        <text class="daily-herbs-label">组成：</text>
+        <text>{{dailyFormula.herbs}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 快捷功能入口（4 列） -->
+  <view class="section-title">
+    <text class="section-icon">⚡</text>
+    <text>核心功能</text>
+  </view>
+  <view class="quick-grid">
+    <view
+      wx:for="{{quickEntries}}"
+      wx:key="id"
+      class="quick-item"
+      data-path="{{item.path}}"
+      bindtap="navigateTo"
+    >
+      <view class="quick-icon-wrap" style="background-color: {{item.color || '#8B4513'}}">
+        <text class="quick-icon">{{item.icon}}</text>
+      </view>
+      <text class="quick-name">{{item.name}}</text>
+      <text class="quick-desc">{{item.desc}}</text>
+    </view>
+  </view>
+
+  <!-- 更多功能入口 -->
+  <view class="section-title">
+    <text class="section-icon">🔍</text>
+    <text>更多功能</text>
+  </view>
+  <view class="secondary-list">
+    <view
+      wx:for="{{secondaryEntries}}"
+      wx:key="id"
+      class="secondary-item"
+      data-path="{{item.path}}"
+      bindtap="navigateTo"
+    >
+      <view class="secondary-left">
+        <text class="secondary-icon">{{item.icon}}</text>
+        <view class="secondary-info">
+          <text class="secondary-name">{{item.name}}</text>
+          <text class="secondary-desc">{{item.desc}}</text>
+        </view>
+      </view>
+      <text class="secondary-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 底部提示 -->
+  <view class="footer-tip">
+    <text class="footer-text">🩺 本工具仅供参考，不构成医疗建议</text>
+    <text class="footer-text">请务必在专业医师指导下用药</text>
+  </view>
+</view>
+
+<!-- 首次访问引导弹窗 -->
+<view class="guide-modal" wx:if="{{showGuide}}" catchtap="closeGuide">
+  <view class="guide-content" catchtap="">
+    <text class="guide-title">👋 欢迎使用倪海厦经方助手</text>
+    <view class="guide-body">
+      <view class="guide-step">
+        <text class="guide-step-num">1</text>
+        <text class="guide-step-text">🩺 AI诊脉 — 输入症状，AI智能辨证</text>
+      </view>
+      <view class="guide-step">
+        <text class="guide-step-num">2</text>
+        <text class="guide-step-text">🌿 药材库 — 探索416味中药知识</text>
+      </view>
+      <view class="guide-step">
+        <text class="guide-step-num">3</text>
+        <text class="guide-step-text">📜 经方阁 — 研习114首经典方剂</text>
+      </view>
+      <view class="guide-step">
+        <text class="guide-step-num">4</text>
+        <text class="guide-step-text">📍 穴位图 — 掌握412处穴位</text>
+      </view>
+    </view>
+    <view class="btn-primary" bindtap="closeGuide">开始使用</view>
+    <text class="guide-disclaimer">⚠️ 本工具仅供学习参考，不构成医疗建议</text>
+  </view>
+</view>

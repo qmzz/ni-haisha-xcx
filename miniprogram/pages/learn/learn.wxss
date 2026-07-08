@@ -1,0 +1,179 @@
+/* pages/learn/learn.wxss — 学习路径样式 */
+
+.container {
+  background-color: #F5F0E8;
+  padding-bottom: 48rpx;
+}
+
+/* ========== 顶部 ========== */
+.learn-header {
+  background: linear-gradient(135deg, #8B4513, #A0522D);
+  padding: 32rpx;
+  margin-bottom: 16rpx;
+}
+
+.learn-header-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.learn-header-desc {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ========== 阶段卡片 ========== */
+.stage-list {
+  padding: 0 24rpx;
+}
+
+.stage-card {
+  background: #FDF8F0;
+  border-radius: 16rpx;
+  margin-bottom: 16rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(139, 69, 19, 0.06);
+  border: 1rpx solid #EFEBE9;
+}
+
+.stage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stage-header:active {
+  opacity: 0.8;
+}
+
+.stage-header-left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.stage-progress-circle {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8B4513, #A0522D);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.stage-progress-text {
+  font-size: 24rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.stage-header-text {
+  flex: 1;
+}
+
+.stage-header-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #3E2723;
+  display: block;
+  margin-bottom: 4rpx;
+}
+
+.stage-header-desc {
+  font-size: 24rpx;
+  color: #8D6E63;
+}
+
+.stage-expand-icon {
+  font-size: 36rpx;
+  color: #C9B8A8;
+  margin-left: 16rpx;
+}
+
+/* ========== 进度条 ========== */
+.stage-progress-bar {
+  height: 6rpx;
+  background: #EFEBE9;
+  border-radius: 3rpx;
+  margin: 16rpx 0;
+  overflow: hidden;
+}
+
+.stage-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2E7D32, #4CAF50);
+  border-radius: 3rpx;
+  transition: width 0.5s;
+}
+
+/* ========== 课程列表 ========== */
+.course-list {
+  border-top: 1rpx solid #EFEBE9;
+  padding-top: 16rpx;
+}
+
+.course-item {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 8rpx;
+  border-radius: 10rpx;
+  margin-bottom: 4rpx;
+}
+
+.course-item:active {
+  background: rgba(139, 69, 19, 0.04);
+}
+
+.course-item.completed {
+  opacity: 0.7;
+}
+
+.course-item.completed .course-name {
+  text-decoration: line-through;
+}
+
+.course-status-icon {
+  font-size: 32rpx;
+  margin-right: 16rpx;
+  width: 40rpx;
+  text-align: center;
+}
+
+.course-info {
+  flex: 1;
+}
+
+.course-name {
+  font-size: 26rpx;
+  color: #3E2723;
+  display: block;
+  margin-bottom: 2rpx;
+}
+
+.course-type {
+  font-size: 20rpx;
+  color: #8D6E63;
+  padding: 2rpx 10rpx;
+  background: rgba(139, 69, 19, 0.06);
+  border-radius: 8rpx;
+}
+
+/* ========== 底部 ========== */
+.footer-tip-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32rpx;
+}
+
+.footer-tip-text {
+  font-size: 22rpx;
+  color: #B8A898;
+  line-height: 1.8;
+}

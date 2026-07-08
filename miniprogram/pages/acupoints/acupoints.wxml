@@ -1,0 +1,82 @@
+<!-- pages/acupoints/acupoints.wxml — 穴位图页面 -->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <text class="search-icon">🔍</text>
+    <input
+      class="search-input"
+      value="{{searchKeyword}}"
+      placeholder="搜索穴位名称、编号、功效..."
+      placeholder-style="color: #B8A898;"
+      bindinput="onSearchInput"
+    />
+    <text wx:if="{{searchKeyword}}" class="search-clear" bindtap="clearSearch">✕</text>
+  </view>
+
+  <!-- 经络筛选 -->
+  <scroll-view class="meridian-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="meridian-list">
+      <view
+        wx:for="{{meridians}}"
+        wx:key="id"
+        class="meridian-tag {{activeMeridian === item.id ? 'meridian-active' : ''}}"
+        data-meridian="{{item.id}}"
+        bindtap="switchMeridian"
+      >
+        {{item.name}}
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 穴位列表 -->
+  <view class="acupoint-list">
+    <view
+      wx:for="{{acupointList}}"
+      wx:key="id"
+      class="acupoint-card"
+    >
+      <view class="acupoint-header">
+        <view class="acupoint-name-row">
+          <text class="acupoint-name">{{item.name}}</text>
+          <text class="acupoint-code">{{item.code}}</text>
+        </view>
+        <view class="acupoint-tags">
+          <text class="tag tag-warning">{{item.meridian}}</text>
+          <text class="tag tag-default">{{item.category}}</text>
+        </view>
+      </view>
+      <view class="acupoint-info">
+        <view class="acupoint-row">
+          <text class="acupoint-row-label">📍 定位</text>
+          <text class="acupoint-row-value">{{item.location}}</text>
+        </view>
+        <view class="acupoint-row">
+          <text class="acupoint-row-label">💪 功效</text>
+          <text class="acupoint-row-value">{{item.functions}}</text>
+        </view>
+        <view class="acupoint-row">
+          <text class="acupoint-row-label">💉 针刺</text>
+          <text class="acupoint-row-value">{{item.technique}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading-more">
+    <text>加载中...</text>
+  </view>
+
+  <view wx:if="{{!hasMore && acupointList.length > 0}}" class="loading-more">
+    <text>— 已加载全部 —</text>
+  </view>
+
+  <view wx:if="{{acupointList.length === 0 && !loading}}" class="empty-state">
+    <text class="empty-icon">📍</text>
+    <text class="empty-text">未找到匹配的穴位</text>
+  </view>
+
+  <!-- 底部提示 -->
+  <view class="footer-tip">
+    <text class="footer-text">⚠️ 针刺操作请在专业医师指导下进行</text>
+  </view>
+</view>

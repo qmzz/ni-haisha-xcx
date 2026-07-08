@@ -1,0 +1,49 @@
+{
+  "description": "倪海厦经方助手 - CloudBase 数据库导入清单",
+  "generated": "2026-07-08T10:37:00+08:00",
+  "collections": [
+    {
+      "name": "herbs",
+      "label": "药材",
+      "file": "herbs.json",
+      "count": 416,
+      "collection_name": "ni_herbs"
+    },
+    {
+      "name": "formulas",
+      "label": "方剂",
+      "file": "formulas.json",
+      "count": 114,
+      "collection_name": "ni_formulas"
+    },
+    {
+      "name": "acupoints",
+      "label": "穴位",
+      "file": "acupoints.json",
+      "count": 411,
+      "collection_name": "ni_acupoints"
+    },
+    {
+      "name": "concepts",
+      "label": "概念",
+      "file": "concepts.json",
+      "count": 43,
+      "collection_name": "ni_concepts"
+    },
+    {
+      "name": "cases",
+      "label": "医案",
+      "file": "cases.json",
+      "count": 51,
+      "collection_name": "ni_cases"
+    },
+    {
+      "name": "diagnosis",
+      "label": "诊断",
+      "file": "diagnosis.json",
+      "count": 45,
+      "collection_name": "ni_diagnosis"
+    }
+  ],
+  "total": 1080
+}

@@ -1,0 +1,80 @@
+<!-- pages/formulas/formulas.wxml — 经方阁页面 -->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <text class="search-icon">🔍</text>
+    <input
+      class="search-input"
+      value="{{searchKeyword}}"
+      placeholder="搜索方剂名称、功效、组成..."
+      placeholder-style="color: #B8A898;"
+      bindinput="onSearchInput"
+    />
+    <text wx:if="{{searchKeyword}}" class="search-clear" bindtap="clearSearch">✕</text>
+  </view>
+
+  <!-- 分类标签 -->
+  <scroll-view class="category-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="category-list">
+      <view
+        wx:for="{{categories}}"
+        wx:key="id"
+        class="category-tag {{activeCategory === item.id ? 'category-active' : ''}}"
+        data-category="{{item.id}}"
+        bindtap="switchCategory"
+      >
+        {{item.name}}
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 方剂列表 -->
+  <view class="formula-list">
+    <view
+      wx:for="{{formulaList}}"
+      wx:key="id"
+      class="formula-card"
+      data-id="{{item.id}}"
+      bindtap="goToDetail"
+    >
+      <view class="formula-header">
+        <view class="formula-name-row">
+          <text class="formula-name">{{item.name}}</text>
+          <view class="formula-difficulty difficulty-{{item.difficulty}}">
+            <text>{{item.difficulty}}</text>
+          </view>
+        </view>
+        <text class="formula-source">《{{item.source}}》</text>
+      </view>
+      <view class="formula-tags">
+        <text class="tag tag-primary">{{item.category}} · {{item.subCategory}}</text>
+        <text class="tag tag-default">{{item.herbCount}}味药</text>
+      </view>
+      <view class="formula-usage">
+        <text class="formula-usage-label">功用：</text>
+        <text>{{item.usage}}</text>
+      </view>
+      <view class="formula-herbs ellipsis-2">
+        <text class="formula-herbs-label">组成：</text>
+        <text>{{item.herbs}}</text>
+      </view>
+      <view class="formula-arrow">
+        <text>查看详情 ›</text>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading-more">
+    <text>加载中...</text>
+  </view>
+
+  <view wx:if="{{!hasMore && formulaList.length > 0}}" class="loading-more">
+    <text>— 已加载全部 —</text>
+  </view>
+
+  <view wx:if="{{formulaList.length === 0 && !loading}}" class="empty-state">
+    <text class="empty-icon">📜</text>
+    <text class="empty-text">未找到匹配的方剂</text>
+    <text class="empty-text text-sm text-muted">试试其他关键词或分类</text>
+  </view>
+</view>

@@ -1,0 +1,127 @@
+/* pages/cases/cases.wxss — 医案馆样式 */
+
+.container {
+  background-color: #F5F0E8;
+}
+
+/* ========== 分类标签 ========== */
+.category-scroll {
+  padding: 8rpx 0;
+}
+
+.category-list {
+  display: flex;
+  padding: 0 24rpx;
+  white-space: nowrap;
+}
+
+.category-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 12rpx 28rpx;
+  margin-right: 16rpx;
+  border-radius: 32rpx;
+  font-size: 26rpx;
+  color: #5D4037;
+  background: #FDF8F0;
+  border: 1rpx solid #E0D6CC;
+}
+
+.category-active {
+  background: linear-gradient(135deg, #8B4513, #A0522D);
+  color: #FFFFFF;
+  border-color: transparent;
+  box-shadow: 0 2rpx 12rpx rgba(139, 69, 19, 0.2);
+}
+
+/* ========== 医案卡片 ========== */
+.case-list {
+  padding: 16rpx 24rpx;
+}
+
+.case-card {
+  background: #FDF8F0;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 12rpx rgba(139, 69, 19, 0.04);
+  border: 1rpx solid #EFEBE9;
+}
+
+.case-header:active {
+  opacity: 0.8;
+}
+
+.case-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+
+.case-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #3E2723;
+  flex: 1;
+}
+
+.case-expand-icon {
+  font-size: 32rpx;
+  color: #C9B8A8;
+  margin-left: 16rpx;
+}
+
+.case-meta {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 12rpx;
+}
+
+.case-source {
+  font-size: 22rpx;
+  color: #8D6E63;
+}
+
+.case-summary {
+  font-size: 26rpx;
+  color: #5D4037;
+  line-height: 1.7;
+}
+
+/* ========== 展开详情 ========== */
+.case-detail {
+  margin-top: 20rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #EFEBE9;
+}
+
+.case-detail-item {
+  margin-bottom: 16rpx;
+}
+
+.case-detail-label {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #8B4513;
+  display: block;
+  margin-bottom: 6rpx;
+}
+
+.case-detail-text {
+  font-size: 26rpx;
+  color: #3E2723;
+  line-height: 1.7;
+}
+
+.case-analysis {
+  background: rgba(139, 69, 19, 0.03);
+  padding: 16rpx;
+  border-radius: 8rpx;
+  border-left: 4rpx solid #8B4513;
+}
+
+.text-success {
+  color: #2E7D32 !important;
+}

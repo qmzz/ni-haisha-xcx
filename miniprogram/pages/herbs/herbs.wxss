@@ -1,0 +1,135 @@
+/* pages/herbs/herbs.wxss — 药材库样式 */
+
+/* ========== 搜索栏 ========== */
+.search-bar {
+  background: #FDF8F0;
+  margin: 16rpx 24rpx;
+  border: 1px solid #E0D6CC;
+}
+
+.search-input {
+  flex: 1;
+  font-size: 28rpx;
+  color: #3E2723;
+}
+
+.search-clear {
+  font-size: 28rpx;
+  color: #B8A898;
+  padding: 4rpx 8rpx;
+}
+
+/* ========== 分类标签 ========== */
+.category-scroll {
+  padding: 8rpx 0;
+}
+
+.category-list {
+  display: flex;
+  padding: 0 24rpx;
+  white-space: nowrap;
+}
+
+.category-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 12rpx 28rpx;
+  margin-right: 16rpx;
+  border-radius: 32rpx;
+  font-size: 26rpx;
+  color: #5D4037;
+  background: #FDF8F0;
+  border: 1rpx solid #E0D6CC;
+  transition: all 0.3s;
+}
+
+.category-active {
+  background: linear-gradient(135deg, #2E7D32, #4CAF50);
+  color: #FFFFFF;
+  border-color: transparent;
+  box-shadow: 0 2rpx 12rpx rgba(46, 125, 50, 0.2);
+}
+
+/* ========== 药材列表 ========== */
+.herb-list {
+  padding: 16rpx 24rpx;
+}
+
+.herb-card {
+  display: flex;
+  align-items: center;
+  background: #FDF8F0;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  margin-bottom: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(139, 69, 19, 0.04);
+  border: 1rpx solid #EFEBE9;
+}
+
+.herb-card:active {
+  opacity: 0.8;
+}
+
+.herb-card-left {
+  margin-right: 20rpx;
+}
+
+.herb-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 16rpx;
+  background: linear-gradient(135deg, #2E7D32, #4CAF50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.herb-avatar-text {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.herb-card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.herb-card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+
+.herb-name {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #3E2723;
+  margin-right: 12rpx;
+}
+
+.herb-pinyin {
+  font-size: 22rpx;
+  color: #8D6E63;
+}
+
+.herb-tags {
+  display: flex;
+  gap: 8rpx;
+  margin-bottom: 8rpx;
+}
+
+.herb-functions {
+  font-size: 24rpx;
+  color: #8D6E63;
+  line-height: 1.5;
+}
+
+.herb-card-right {
+  margin-left: 12rpx;
+}
+
+.herb-arrow {
+  font-size: 32rpx;
+  color: #C9B8A8;
+}
