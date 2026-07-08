@@ -68,9 +68,7 @@ Page({
     for (const { provider, model } of configs) {
       try {
         const m = wx.cloud.extend.AI.createModel(provider);
-        const res = await m.generateText({
-          data: { model, messages, temperature: 0.7, max_tokens: 2048 }
-        });
+        const res = await m.generateText({ model, messages, temperature: 0.7, max_tokens: 2048 });
 
         const aiMsg = {
           id: 'a-' + Date.now(),
