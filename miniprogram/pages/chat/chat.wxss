@@ -1,4 +1,4 @@
-/* pages/chat/chat.wxss — AI 对话页样式 */
+/* pages/chat/chat.wxss - AI 对话页样式 */
 
 .chat-container {
   display: flex;
@@ -159,7 +159,7 @@
 .input-row {
   display: flex;
   align-items: flex-end;
-  gap: 12rpx;
+  /* gap:12rpx; */
 }
 
 .chat-input {

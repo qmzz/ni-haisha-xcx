@@ -1,4 +1,4 @@
-/* pages/herb-detail/herb-detail.wxss — 药材详情样式 */
+/* pages/herb-detail/herb-detail.wxss - 药材详情样式 */
 
 /* ========== 头部卡片 ========== */
 .herb-header-card {

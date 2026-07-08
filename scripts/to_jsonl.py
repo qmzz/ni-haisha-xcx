@@ -11,7 +11,7 @@ collections = ['herbs', 'formulas', 'acupoints', 'concepts', 'cases', 'diagnosis
 
 for name in collections:
     src = os.path.join(DATA_DIR, f'{name}.json')
-    dst = os.path.join(DATA_DIR, f'{name}.jsonl')
+    dst = os.path.join(DATA_DIR, f'{name}.json')
 
     if not os.path.exists(src):
         print(f'⚠️  {name}.json 不存在，跳过')

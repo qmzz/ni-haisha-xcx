@@ -1,4 +1,4 @@
-/* pages/formulas/formulas.wxss — 经方阁样式 */
+/* pages/formulas/formulas.wxss - 经方阁样式 */
 
 .search-bar {
   background: #FDF8F0;
@@ -41,10 +41,9 @@
 }
 
 .category-active {
-  background: linear-gradient(135deg, #6B3410, #8B4513);
+  background: #8B4513;
   color: #FFFFFF;
   border-color: transparent;
-  box-shadow: 0 2rpx 12rpx rgba(107, 52, 16, 0.2);
 }
 
 /* ========== 方剂卡片 ========== */
@@ -57,13 +56,7 @@
   border-radius: 16rpx;
   padding: 24rpx;
   margin-bottom: 16rpx;
-  box-shadow: 0 2rpx 12rpx rgba(139, 69, 19, 0.06);
   border: 1rpx solid #EFEBE9;
-  position: relative;
-}
-
-.formula-card:active {
-  opacity: 0.85;
 }
 
 .formula-header {
@@ -90,17 +83,17 @@
   font-weight: 500;
 }
 
-.difficulty-基础 {
+.difficulty-basic {
   background: rgba(46, 125, 50, 0.1);
   color: #2E7D32;
 }
 
-.difficulty-进阶 {
+.difficulty-medium {
   background: rgba(210, 105, 30, 0.1);
   color: #D2691E;
 }
 
-.difficulty-专业 {
+.difficulty-advanced {
   background: rgba(198, 40, 40, 0.1);
   color: #C62828;
 }
@@ -112,8 +105,13 @@
 
 .formula-tags {
   display: flex;
-  gap: 8rpx;
+  flex-wrap: wrap;
   margin-bottom: 12rpx;
+}
+
+.formula-tags .tag {
+  margin-right: 8rpx;
+  margin-bottom: 8rpx;
 }
 
 .formula-usage {

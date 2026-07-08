@@ -1,4 +1,4 @@
-/* pages/formula-detail/formula-detail.wxss — 方剂详情样式 */
+/* pages/formula-detail/formula-detail.wxss - 方剂详情样式 */
 
 /* ========== 头部卡片 ========== */
 .formula-header-card {
@@ -21,7 +21,7 @@
 .formula-header-meta {
   display: flex;
   align-items: center;
-  gap: 16rpx;
+  /* gap:16rpx; */
   margin-bottom: 16rpx;
 }
 
@@ -79,7 +79,7 @@
 .herb-composition {
   display: flex;
   flex-direction: column;
-  gap: 16rpx;
+  /* gap:16rpx; */
 }
 
 .herb-composition-item {

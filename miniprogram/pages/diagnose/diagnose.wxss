@@ -1,4 +1,4 @@
-/* pages/diagnose/diagnose.wxss — AI诊脉样式 */
+/* pages/diagnose/diagnose.wxss - AI诊脉样式 */
 
 .diagnose-container {
   display: flex;
@@ -168,7 +168,7 @@
 .suggested-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 12rpx;
+  /* gap:12rpx; */
 }
 
 .suggested-item {
@@ -197,7 +197,7 @@
 .input-row {
   display: flex;
   align-items: flex-end;
-  gap: 12rpx;
+  /* gap:12rpx; */
 }
 
 .input-wrap {

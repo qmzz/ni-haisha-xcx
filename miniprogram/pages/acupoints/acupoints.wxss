@@ -1,4 +1,4 @@
-/* pages/acupoints/acupoints.wxss — 穴位图样式 */
+/* pages/acupoints/acupoints.wxss - 穴位图样式 */
 
 .container {
   background-color: #F5F0E8;
@@ -94,13 +94,13 @@
 
 .acupoint-tags {
   display: flex;
-  gap: 8rpx;
+  /* gap:8rpx; */
 }
 
 .acupoint-info {
   display: flex;
   flex-direction: column;
-  gap: 12rpx;
+  /* gap:12rpx; */
 }
 
 .acupoint-row {

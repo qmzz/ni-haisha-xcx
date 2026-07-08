@@ -115,10 +115,10 @@ def main():
     for col_name, col_def in COLLECTIONS.items():
         print(f"     - {col_name} ({col_def['name']})")
     print("  3. 对每个集合，点击「导入」→ 选择 data/ 目录下对应的 JSON 文件")
-    print("  4. 导入格式选择「JSON Lines」（每行一个 JSON 对象）")
+    print("  4. 导入格式选择「JSON Lines（推荐 .json 后缀）」（每行一个 JSON 对象）")
 
-    # 生成 JSON Lines 格式的转换提示
-    print("\n💡 提示：如果控制台要求 JSON Lines 格式，运行:")
+    # 生成 JSON Lines（推荐 .json 后缀） 格式的转换提示
+    print("\n💡 提示：如果控制台要求 JSON Lines（推荐 .json 后缀） 格式，运行:")
     print("   python3 scripts/to_jsonl.py")
 
 

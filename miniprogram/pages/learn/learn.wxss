@@ -1,4 +1,4 @@
-/* pages/learn/learn.wxss — 学习路径样式 */
+/* pages/learn/learn.wxss - 学习路径样式 */
 
 .container {
   background-color: #F5F0E8;

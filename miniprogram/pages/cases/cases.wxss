@@ -1,4 +1,4 @@
-/* pages/cases/cases.wxss — 医案馆样式 */
+/* pages/cases/cases.wxss - 医案馆样式 */
 
 .container {
   background-color: #F5F0E8;
@@ -75,7 +75,7 @@
 .case-meta {
   display: flex;
   align-items: center;
-  gap: 12rpx;
+  /* gap:12rpx; */
   margin-bottom: 12rpx;
 }
 

@@ -1,4 +1,4 @@
-/* app.wxss — 倪海厦经方助手 全局样式 */
+/* app.wxss - 倪海厦经方助手 全局样式 */
 
 /* ==========================================
    CSS 变量 / 全局配色体系
@@ -164,10 +164,10 @@ page {
 .justify-between { justify-content: space-between; }
 .justify-around { justify-content: space-around; }
 
-.gap-xs { gap: 8rpx; }
-.gap-sm { gap: 16rpx; }
-.gap-md { gap: 24rpx; }
-.gap-lg { gap: 32rpx; }
+.gap-xs { /* gap:8rpx; */ }
+.gap-sm { /* gap:16rpx; */ }
+.gap-md { /* gap:24rpx; */ }
+.gap-lg { /* gap:32rpx; */ }
 
 /* ==========================================
    Spacing

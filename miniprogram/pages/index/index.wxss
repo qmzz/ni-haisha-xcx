@@ -1,4 +1,4 @@
-/* pages/index/index.wxss — 首页样式 */
+/* pages/index/index.wxss - 首页样式 */
 
 /* ========== Header ========== */
 .header {
@@ -94,7 +94,7 @@
 
 .daily-tags {
   display: flex;
-  gap: 12rpx;
+  /* gap:12rpx; */
   margin-bottom: 16rpx;
 }
 

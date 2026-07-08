@@ -63,7 +63,7 @@ Page({
       source: doc.source || '',
       category: doc.category || '',
       subCategory: (doc.extra && doc.extra['分类']) || '',
-      difficulty: '基础',
+      difficulty: 'basic',
       usage: (doc.extra && doc.extra['功效']) || (doc.extra && doc.extra['功用']) || '',
       herbs: composition,
       herbCount: herbParts.length || 0,

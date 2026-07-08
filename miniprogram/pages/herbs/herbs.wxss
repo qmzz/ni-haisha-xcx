@@ -1,4 +1,4 @@
-/* pages/herbs/herbs.wxss — 药材库样式 */
+/* pages/herbs/herbs.wxss - 药材库样式 */
 
 /* ========== 搜索栏 ========== */
 .search-bar {
@@ -115,7 +115,7 @@
 
 .herb-tags {
   display: flex;
-  gap: 8rpx;
+  /* gap:8rpx; */
   margin-bottom: 8rpx;
 }
 
