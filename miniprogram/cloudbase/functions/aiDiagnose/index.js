@@ -41,43 +41,27 @@ exports.main = async (event, context) => {
     { role: 'user', content: question }
   ];
 
-  // 尝试多种方式调用 AI 模型
-  const providerModelPairs = [
-    { provider: 'hunyuan-v3', model: 'hy3' },
-    { provider: 'hunyuan-v3', model: 'hy3-preview' },
-    { provider: 'cloudbase', model: 'hy3-preview' },
-  ];
+  try {
+    const modelInstance = cloud.extend.AI.createModel('hunyuan-v3');
+    const res = await modelInstance.generateText({
+      model: 'hy3-preview',
+      messages,
+      temperature: 0.7,
+      max_tokens: 2048
+    });
 
-  let lastError = null;
-  for (const { provider, model } of providerModelPairs) {
-    try {
-      console.log(`尝试调用 AI: provider=${provider}, model=${model}`);
-      
-      const modelInstance = cloud.extend.AI.createModel(provider);
-      const res = await modelInstance.generateText({
-        model,
-        messages,
-        temperature: 0.7,
-        max_tokens: 2048
-      });
-
-      console.log('AI 调用成功，token 用量:', res.usage);
-      return {
-        code: 0,
-        reply: res.text,
-        usage: res.usage || {},
-        provider: `${provider}/${model}`
-      };
-    } catch (err) {
-      console.error(`AI调用失败 (${provider}/${model}):`, err.message || err);
-      lastError = err;
-    }
+    console.log('AI 调用成功，token 用量:', res.usage);
+    return {
+      code: 0,
+      reply: res.text,
+      usage: res.usage || {}
+    };
+  } catch (err) {
+    console.error('AI 调用失败:', err.message || err);
+    return {
+      code: -1,
+      message: 'AI 服务暂时不可用，请稍后重试',
+      detail: err.message || String(err)
+    };
   }
-
-  // 所有方案都失败
-  return {
-    code: -1,
-    message: 'AI 服务暂时不可用，请稍后重试',
-    detail: lastError ? (lastError.message || String(lastError)) : '未知错误'
-  };
 };
