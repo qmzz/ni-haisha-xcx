@@ -1,19 +1,15 @@
 // pages/diagnose/diagnose.js — AI诊脉页面逻辑
 const app = getApp();
 
+const SYSTEM_PROMPT = '你是倪海厦（倪师），精通伤寒论、金匮要略、黄帝内经、神农本草经和针灸大成。请以倪海厦的口吻，按以下格式回复：\n【辨证分析】\n【诊断结论】\n【经方推荐】\n【倪师讲解】\n【调养建议】\n\n末尾注明：以上内容为AI生成，仅供参考学习，不构成医疗建议。';
+
 Page({
   data: {
-    // 对话消息列表
     messages: [],
-    // 输入框内容
     inputValue: '',
-    // 是否正在等待AI回复
     loading: false,
-    // 自动滚动到最底
     scrollToView: '',
-    // 是否首次进入（显示引导问题）
     isFirstChat: true,
-    // 建议问题
     suggestedQuestions: [
       '最近总是头痛，怕冷，是什么问题？',
       '失眠多梦，口干舌燥怎么调理？',
@@ -22,12 +18,10 @@ Page({
       '腰膝酸软，畏寒怕冷什么原因？',
       '小孩咳嗽有痰，怎么用中药？',
     ],
-    // 输入框高度
     inputHeight: 42,
   },
 
   onLoad() {
-    // 加载历史记录
     const history = app.globalData.diagnoseHistory || [];
     if (history.length > 0) {
       this.setData({
@@ -36,19 +30,16 @@ Page({
         scrollToView: 'msg-' + (history.length - 1)
       });
     } else {
-      // 新用户显示欢迎消息
       this.showWelcome();
     }
   },
 
   onShow() {
-    // 确保最新消息可见
     if (this.data.messages.length > 0) {
       this.scrollToBottom();
     }
   },
 
-  // 显示欢迎消息
   showWelcome() {
     const welcomeMsg = {
       id: 'welcome',
@@ -56,18 +47,13 @@ Page({
       content: '👨‍⚕️ 欢迎使用AI诊脉助手！\n\n请描述您的症状，我会根据倪海厦经方理论为您辨证分析。\n\n您可以描述：\n• 主要症状（头痛、发热、咳嗽等）\n• 持续时间\n• 其他伴随症状\n• 舌象、脉象（如果知道的话）\n\n⚠️ 本系统仅供学习参考，不构成医疗建议。',
       time: this.formatTime(new Date())
     };
-    this.setData({
-      messages: [welcomeMsg],
-      scrollToView: 'msg-welcome'
-    });
+    this.setData({ messages: [welcomeMsg], scrollToView: 'msg-welcome' });
   },
 
-  // 发送消息
   sendMessage() {
     const content = this.data.inputValue.trim();
     if (!content || this.data.loading) return;
 
-    // 添加用户消息
     const userMsg = {
       id: 'user-' + Date.now(),
       role: 'user',
@@ -85,123 +71,88 @@ Page({
       inputHeight: 42
     });
 
-    // 调用云函数进行 AI 诊断
-    this.callAIDiagnose(content);
+    this.callAI(content);
   },
 
-  // 调用 AI 诊断云函数
-  callAIDiagnose(question) {
-    // 尝试调用云函数
-    wx.cloud.callFunction({
-      name: 'aiDiagnose',
-      data: {
-        question: question,
-        history: this.getRecentHistory()
-      },
-      success: (res) => {
-        this.handleAIResponse(res.result);
-      },
-      fail: (err) => {
-        console.error('云函数调用失败:', err);
-        // 降级：使用本地模拟回复
-        this.handleFallbackResponse(question);
-      }
-    });
-  },
+  async callAI(question) {
+    const messages = [
+      { role: 'system', content: SYSTEM_PROMPT },
+      ...this.getRecentHistory().map(m => ({
+        role: m.role === 'system' ? 'assistant' : m.role,
+        content: m.content
+      })),
+      { role: 'user', content: question }
+    ];
 
-  // 处理 AI 回复
-  handleAIResponse(result) {
-    let content;
-    if (result && result.code === 0) {
-      content = result.reply || result.content;
-      if (result.method) {
-        content = '[via ' + result.method + ']
+    const configs = [
+      { provider: 'hunyuan-v3', model: 'hy3' },
+      { provider: 'hunyuan-v3', model: 'hy3-preview' },
+      { provider: 'cloudbase', model: 'hy3-preview' },
+    ];
 
-' + content;
-      }
-    } else {
-      const errMsg = result && result.message;
-      const errs = result && result.errors;
-      if (errs && errs.length) {
-        content = 'AI 调用失败，诊断信息：\n\n' + errs.map((e, i) => (i+1) + '. ' + e).join('\n');
-      } else {
-        content = errMsg || '抱歉，我暂时无法回答这个问题，请稍后再试。';
+    for (const { provider, model } of configs) {
+      try {
+        const m = wx.cloud.extend.AI.createModel(provider);
+        const res = await m.generateText({
+          data: { model, messages, temperature: 0.7, max_tokens: 2048 }
+        });
+
+        const aiMsg = {
+          id: 'ai-' + Date.now(),
+          role: 'assistant',
+          content: res.text,
+          time: this.formatTime(new Date()),
+        };
+        const updated = [...this.data.messages, aiMsg];
+        this.setData({ messages: updated, loading: false, scrollToView: 'msg-' + aiMsg.id });
+        app.globalData.diagnoseHistory = updated;
+        return;
+      } catch (err) {
+        const msg = (err.message || String(err)).substring(0, 200);
+        console.warn(provider + '+' + model + ' 不可用:', msg);
       }
     }
 
-    const aiMsg = {
-      id: 'ai-' + Date.now(),
-      role: 'assistant',
-      content: content || '抱歉，我暂时无法回答这个问题，请稍后再试。',
-      time: this.formatTime(new Date()),
-    };
-
-    const messages = [...this.data.messages, aiMsg];
-    this.setData({
-      messages,
-      loading: false,
-      scrollToView: 'msg-' + aiMsg.id
-    });
-
-    // 更新全局历史
-    app.globalData.diagnoseHistory = messages;
+    // 全部失败
+    this.handleFallbackResponse(question);
   },
 
-  // 降级：本地备用回复（云函数不可用时）
-  handleFallbackResponse(question) {
-    setTimeout(() => {
-      const reply = '感谢您描述的症状。\n\n🔍 根据倪海厦经方辨证思路，建议您关注以下几点：\n\n① 观察舌象：舌质颜色、舌苔厚薄与颜色\n② 确认寒热：是否有恶寒、发热、手足冷热\n③ 辨别虚实：体力状况、脉象有力与否\n④ 回顾六经：症状是否符合六经辨证框架\n\n当前AI辨证服务正在恢复中，建议稍后重试。\n\n📚 提示：您可先浏览「经方阁」对照方证，或查阅「药材库」了解药物性味归经。\n\n⚠️ 本系统提供学习参考，具体诊疗请咨询执业中医师。';
-
-      const aiMsg = {
-        id: 'ai-' + Date.now(),
-        role: 'assistant',
-        content: reply,
-        time: this.formatTime(new Date())
-      };
-
-      const messages = [...this.data.messages, aiMsg];
-      this.setData({
-        messages,
-        loading: false,
-        scrollToView: 'msg-' + aiMsg.id
-      });
-
-      app.globalData.diagnoseHistory = messages;
-    }, 1500);
-  },
-
-  // 获取最近对话历史（给 AI 上下文）
   getRecentHistory() {
-    const recent = this.data.messages.slice(-6);
-    return recent.map(msg => ({
+    return this.data.messages.slice(-6).map(msg => ({
       role: msg.role === 'system' ? 'assistant' : msg.role,
       content: msg.content
     }));
   },
 
-  // 输入框变化
+  handleFallbackResponse(question) {
+    const aiMsg = {
+      id: 'ai-' + Date.now(),
+      role: 'assistant',
+      content: 'AI 调用失败，请确认：\n1. 小程序基础库 ≥ 3.15.1\n2. 已在 CloudBase 控制台 AI 模块中启用 hy3-preview 模型\n3. 开发者工具中「详情→本地设置→不校验合法域名」已勾选\n\n如以上没问题，可前往云开发控制台 → 日志 → 云函数查看具体错误。',
+      time: this.formatTime(new Date())
+    };
+    const updated = [...this.data.messages, aiMsg];
+    this.setData({ messages: updated, loading: false, scrollToView: 'msg-' + aiMsg.id });
+    app.globalData.diagnoseHistory = updated;
+  },
+
   onInput(e) {
     this.setData({ inputValue: e.detail.value });
   },
 
-  // 点击建议问题
   tapSuggestedQuestion(e) {
     const question = e.currentTarget.dataset.question;
     this.setData({ inputValue: question });
     this.sendMessage();
   },
 
-  // 清空对话
   clearChat() {
     wx.showModal({
       title: '确认清空',
       content: '确定要清空当前对话记录吗？',
       success: (res) => {
         if (res.confirm) {
-          this.setData({
-            messages: [],
-            isFirstChat: true
-          });
+          this.setData({ messages: [], isFirstChat: true });
           app.globalData.diagnoseHistory = [];
           this.showWelcome();
         }
@@ -209,23 +160,19 @@ Page({
     });
   },
 
-  // 回到底部
   scrollToBottom() {
     const messages = this.data.messages;
     if (messages.length > 0) {
-      const last = messages[messages.length - 1];
-      this.setData({ scrollToView: 'msg-' + last.id });
+      this.setData({ scrollToView: 'msg-' + messages[messages.length - 1].id });
     }
   },
 
-  // 格式化时间
   formatTime(date) {
     const h = date.getHours().toString().padStart(2, '0');
     const m = date.getMinutes().toString().padStart(2, '0');
-    return `${h}:${m}`;
+    return h + ':' + m;
   },
 
-  // 分享
   onShareAppMessage() {
     return {
       title: 'AI诊脉 — 倪海厦经方助手智能辨证',
