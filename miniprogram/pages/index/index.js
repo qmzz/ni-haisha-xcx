@@ -83,11 +83,23 @@ Page({
     this.setData({ dailyFormula });
   },
 
-  // 导航到功能页
+  // 导航到功能页：tabBar 页面必须用 switchTab，普通页面用 navigateTo
   navigateTo(e) {
     const path = e.currentTarget.dataset.path;
     if (!path) return;
-    wx.navigateTo({ url: path });
+
+    const tabPages = [
+      '/pages/index/index',
+      '/pages/diagnose/diagnose',
+      '/pages/herbs/herbs',
+      '/pages/formulas/formulas'
+    ];
+
+    if (tabPages.indexOf(path) >= 0) {
+      wx.switchTab({ url: path });
+    } else {
+      wx.navigateTo({ url: path });
+    }
   },
 
   // 切换 tab 导航
