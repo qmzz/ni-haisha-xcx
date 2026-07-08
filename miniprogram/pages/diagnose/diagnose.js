@@ -114,10 +114,19 @@ Page({
     let content;
     if (result && result.code === 0) {
       content = result.reply || result.content;
+      if (result.method) {
+        content = '[via ' + result.method + ']
+
+' + content;
+      }
     } else {
-      // 显示云函数返回的具体错误信息
-      const errMsg = result && (result.message || result.detail || result.error);
-      content = errMsg || '抱歉，我暂时无法回答这个问题，请稍后再试。';
+      const errMsg = result && result.message;
+      const errs = result && result.errors;
+      if (errs && errs.length) {
+        content = 'AI 调用失败，诊断信息：\n\n' + errs.map((e, i) => (i+1) + '. ' + e).join('\n');
+      } else {
+        content = errMsg || '抱歉，我暂时无法回答这个问题，请稍后再试。';
+      }
     }
 
     const aiMsg = {
