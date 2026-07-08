@@ -42,12 +42,16 @@ exports.main = async (event, context) => {
   ];
 
   try {
-    const modelInstance = cloud.extend.AI.createModel('hunyuan-v3');
-    const res = await modelInstance.generateText({
-      model: 'hy3-preview',
-      messages,
-      temperature: 0.7,
-      max_tokens: 2048
+    // 云函数中正确 API：cloud.ai.createModel()，不是 cloud.extend.AI.createModel()
+    const model = cloud.ai.createModel('hunyuan-v3');
+
+    const res = await model.generateText({
+      data: {
+        model: 'hy3-preview',
+        messages,
+        temperature: 0.7,
+        max_tokens: 2048
+      }
     });
 
     console.log('AI 调用成功，token 用量:', res.usage);
