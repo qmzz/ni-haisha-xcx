@@ -138,12 +138,14 @@
 .quick-grid {
   display: flex;
   flex-wrap: wrap;
-  padding: 0 16rpx;
+  justify-content: space-between;
+  padding: 0 24rpx;
 }
 
 .quick-item {
-  width: calc(50% - 32rpx);
-  margin: 8rpx 16rpx;
+  width: 342rpx;
+  box-sizing: border-box;
+  margin: 8rpx 0;
   background: #FDF8F0;
   border-radius: 20rpx;
   padding: 32rpx 24rpx;
