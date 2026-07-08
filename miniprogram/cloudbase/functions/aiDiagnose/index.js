@@ -20,20 +20,16 @@ exports.main = async (event, context) => {
     { role: 'user', content: question }
   ];
 
-  // 尝试 hunyuan-v3（免费计划）和 cloudbase（资源点套餐）
-  const providerModelPairs = [
-    { provider: 'hunyuan-v3', model: 'hy3-preview' },
-    { provider: 'hunyuan-v3', model: 'hy3' },
-    { provider: 'cloudbase', model: 'hy3-preview' },
-  ];
+  // 依次尝试 hunyuan-v3（免费计划优先）和 cloudbase
+  const providerList = ['hunyuan-v3', 'cloudbase'];
 
-  for (const { provider, model } of providerModelPairs) {
+  for (const provider of providerList) {
     try {
       const ai = cloud.ai();
-      const m = ai.createModel(provider);
+      const model = ai.createModel(provider);
 
-      const res = await m.streamText({
-        model,
+      const res = await model.streamText({
+        model: 'hy3-preview',
         messages
       });
 
@@ -43,18 +39,16 @@ exports.main = async (event, context) => {
       }
 
       const usage = await res.usage;
-      console.log(`✅ 调用成功: ${provider}/${model}, tokens: ${usage.total_tokens}`);
 
       return {
         code: 0,
         reply: fullText,
-        usage,
-        model: `${provider}/${model}`
+        usage
       };
     } catch (err) {
-      console.error(`❌ ${provider}/${model}:`, (err.message || String(err)).substring(0, 150));
+      console.error(`${provider} 调用失败:`, (err.message || String(err)).substring(0, 200));
     }
   }
 
-  return { code: -1, message: 'AI 服务暂时不可用，请稍后重试' };
+  return { code: -1, message: 'AI 服务暂不可用，请稍后再试' };
 };
